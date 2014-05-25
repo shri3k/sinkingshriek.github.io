@@ -7,6 +7,165 @@
     <atom:link href="http://sinkingshriek.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Imagine trying to build a skyscraper with just a wrench.</title>
+        <description>&lt;h1 id=&quot;imagine-trying-to-build-a-skyscraper-with-just-a-wrench&quot;&gt;Imagine trying to build a skyscraper with just a wrench.&lt;/h1&gt;
+
+&lt;p&gt;Think of us, devs, as construction workers. Let’s just pretend for now that we’re construction workers. You’re given all these ideas and blueprints by architects and business folks and everything that’s needed for construction. You are provided with all the possible resources that you can possibly think of to get this herculean task done but the problem is that you have no clue how to operate those big cranes, excavators, forklifts etc but you’re an expert in using wrench. I’m not saying it’s completely useless, well maybe to screw things when one of the nuts come lose in those bigger machinery but the point is you need to learn tools if you’re even conceiving of making big web-apps. This doesn’t just apply to web-apps. This applies to pretty much in all fields. So you, as a web-developer better know your tools well.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;I’m going to split this post into multiple posts as it got much bigger than I expected.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;devtools&quot;&gt;DevTools&lt;/h2&gt;
+&lt;p&gt;There are plenty of tutorials, tips and tricks on dev tools in the Internet and this one isn’t going to be different either. I can’t stress this enough. Learn to master &lt;em&gt;DEVTOOLS&lt;/em&gt;. It might feel like people are shoving trying to shove it down your throat because it’s a crucial part of being a web-developer. If you’re going to be a decent developer then not knowing this should be a crime. This post is not going to dive into details into all the possibilities that devtools has to offer but give you overview on what power it holds. However I will present the link to go deeper on them if you want to know more of the APIs. I will try to cover for both Firefox and Chrome (sorry IE) but not going to do one on one comparison. Oh and another disclaimer is that this is geared more towards PC so if you’re Mac user then the shortcut might be a little different. Usually, the &lt;code&gt;Ctrl&lt;/code&gt; is replaced with &lt;code&gt;Cmd&lt;/code&gt;. Okay, let’s begin.&lt;/p&gt;
+
+&lt;h2 id=&quot;opening-devtools&quot;&gt;Opening devtools&lt;/h2&gt;
+&lt;p&gt;The fastest way to get to the developer tools in either Chrome or Firefox is by pressing &lt;code&gt;Ctrl + Shift + I&lt;/code&gt;. Others might prefer &lt;code&gt;F12&lt;/code&gt; but I usually go for the former since &lt;code&gt;F12&lt;/code&gt; is much farther than those three keys. You can also take the old route of right clicking and selecting &lt;code&gt;Inspect Element&lt;/code&gt; which will open up your devtools with &lt;code&gt;Element panel&lt;/code&gt; being active and focusing on the element that was pointed to by your mouse (assuming that the mouse click is on your browser). There are also other ways to open your devtools like going to the Settings -&amp;gt; Tools -&amp;gt; Developer Tools in Chrome or Tools -&amp;gt; Wev Developer -&amp;gt; Toggle Tools in Firefox. &lt;/p&gt;
+
+&lt;h2 id=&quot;changing-settings-of-devtools&quot;&gt;Changing Settings of devtools&lt;/h2&gt;
+&lt;p&gt;Shortcut:-
+&lt;em&gt;In Chrome only&lt;/em&gt;
+&lt;code&gt;?&lt;/code&gt; or &lt;code&gt;F1&lt;/code&gt; &lt;br /&gt;
+You have your devtools open and before you do anything I highly, highly recommend you change some of the settings first. I’ve seen many people never enter settings even after their heavy usage of devtools. There are some really powerful options available under that settings. All you have to do is press that &lt;code&gt;gear icon&lt;/code&gt; on your devtools in Chrome and in Firefox or if you’re in Chrome then you can just use the shortcut provided above. The options might not be at the exact place in Firefox and Chrome but if you read through some of them then it’s not that hard to make connections between them. Also, not all options of one browser is guaranteed to be available in another, so depending on what you want you might favor one over another. But that’s a different topic on it’s own let’s just change some settings for now:-
++ Disable Cache &lt;em&gt;//this way your browser doesn’t cache your js and css so that you can changes promptly after changes.&lt;/em&gt;&lt;br /&gt;
+&lt;em&gt;The following pertains only to Chrome DevTools&lt;/em&gt;
++ Enable Ctrl + 1 - 9 shortcut to switch panels (self-explanatory which lets you jump to the tabs by pressing &lt;code&gt;Ctrl + [numeric key]&lt;/code&gt;)
++ [Workspaces tab][#workspace_tab] &lt;em&gt;//if you want to live code on Chrome which is discussed later&lt;/em&gt;
++ [Shortcuts][#shortcuts] &lt;em&gt;//Learn those shortcuts for maximum efficiency, also discussed later&lt;/em&gt;&lt;br /&gt;
+Got your settings all setup? Alright, let’s start digging those hidden treasures that devtools has to offer.&lt;/p&gt;
+
+&lt;h2 id=&quot;console-tab&quot;&gt;Console Tab&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Shortcuts:-&lt;/em&gt;&lt;br /&gt;
+&lt;em&gt;In Firefox&lt;/em&gt;&lt;br /&gt;
+&lt;code&gt;Ctrl + Shift + K&lt;/code&gt; &lt;em&gt;//this will take you straight to the Web Console even if you’re in devtools (You’ll soon know why I mentioned this)&lt;/em&gt;&lt;br /&gt;
+&lt;code&gt;Ctrl + Shift + J&lt;/code&gt; &lt;em&gt;//this will only bring up the Web console window and nothing else.&lt;/em&gt;  &lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;In Chrome&lt;/em&gt;&lt;br /&gt;
+&lt;code&gt;Ctrl + Shift + J&lt;/code&gt; &lt;em&gt;//to jump straight to Web Console from your normal browser. Invoking this shortcut again in the devtools will open another devtools for your devtools. This will go as deep as your mind will let you.&lt;/em&gt;&lt;br /&gt;
+&lt;code&gt;Ctrl + 9&lt;/code&gt; &lt;em&gt;//if you’re already in devtools and has enabled &lt;code&gt;Ctrl 1-9 shortcut to switch panels&lt;/code&gt; as mentioned above.&lt;/em&gt;
+***
+If you’re a JavaScript developer then this will be one of the heaviest used tabs in devtools. So let’s start from this tab. The console acts like an interpreter and display all the logging information. You can pretty much do your full programming here too (although not recommended). Go ahead and start writing your JavaScript expressions and start executing it (&lt;code&gt;Enter to execute&lt;/code&gt;) and (&lt;code&gt;Shift + Enter&lt;/code&gt;) to enter multi-line. Before we go full on on what this console has to offer take your time to right-click on the console and see what options it gives you.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;In Firefox&lt;/em&gt;&lt;br /&gt;
+Right click will give you option to &lt;code&gt;log requests and response bodies&lt;/code&gt;. What this means is it &lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;In Chrome&lt;/em&gt;
+Right click will give you more options than Firefox although you’re not losing any functionality per se. 
+* Preserve the logs upon navigation&lt;br /&gt;
+  This does exactly what it says, if you’re jumping over pages then instead of clearing the console on every new page it stores your earlier logs for you.
+* Log XMLHttpRequest&lt;br /&gt;
+  This is to log your AJAX requests just in case if you ever needed that even though it’s available in &lt;code&gt;Network tab&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Okay okay no more transients. Diving in console now.
+###Clear console
+&lt;em&gt;Shortcut&lt;/em&gt;
+&lt;code&gt;Ctrl + L&lt;/code&gt;&lt;br /&gt;
+&lt;em&gt;Alternatives&lt;/em&gt;
+* clear();
+* Right click -&amp;gt; Clear console &lt;em&gt;In chrome&lt;/em&gt;
+* Clicking the clear icon in the devtools 
+But the easiest way to clear the console is to just press &lt;code&gt;Ctrl + L&lt;/code&gt;. That’s it. You don’t have to type &lt;code&gt;clear()&lt;/code&gt; or right click and click &lt;code&gt;Clear Console&lt;/code&gt; or find any obscure icons.
+###Last Evaluated expression
+$_&lt;br /&gt;
+Before you go there and start trying this thing out in your console make sure what expression is. Basically, expressions are any valid code that resolves to a value. According to MDN, there are two types of expressions. Those that assign a value to a variable and those that are simple value.&lt;br /&gt;
+So this:-&lt;br /&gt;
+&lt;code&gt;x = 1&lt;/code&gt; would be first type expression and &lt;code&gt;1+1&lt;/code&gt; would be second type expression. More on this &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators&quot;&gt;here&lt;/a&gt;.  &lt;/p&gt;
+
+&lt;p&gt;So, doing &lt;code&gt;$_&lt;/code&gt; should be pretty clear now that you understand what expression is. Again, &lt;code&gt;$_&lt;/code&gt; will return the last evaluated expression in the console. To be honest, I don’t use this as much. Pressing &lt;code&gt;up&lt;/code&gt; arrow is far more easier than typing &lt;code&gt;$_&lt;/code&gt;. But, just in case you need this then you know there’s a way to do it.&lt;/p&gt;
+
+&lt;h3 id=&quot;last-five-dom-elements&quot;&gt;Last five DOM elements&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;$0 - $4&lt;/code&gt;
+Say, you just inspected (right-click on website and select Inspect) something on your website and you want to grab that element. You could do &lt;code&gt;document.querySelector(&#39;some-class-or-id-or-tag&#39;)&lt;/code&gt; but why waste time when you can just do &lt;code&gt;$0&lt;/code&gt;. Do that again and the item that was stored in &lt;code&gt;$0&lt;/code&gt; earlier will move to &lt;code&gt;$1&lt;/code&gt; and so on till &lt;code&gt;$4&lt;/code&gt;. It’s not necessary that you have to inspect the element every-time from the website. You can simply select it on &lt;code&gt;Element Panel&lt;/code&gt; if you already know where that element is and then use it on console with &lt;code&gt;$0&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;query-selectors&quot;&gt;Query Selectors&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;$(selector)&lt;/li&gt;
+  &lt;li&gt;$$(selector)&lt;/li&gt;
+  &lt;li&gt;$x(path) 
+####$(selector)
+So, you know how to get the DOM elements using &lt;code&gt;$0 - $4&lt;/code&gt; but let’s say you have to find out the element with certain selector. You could inspect all the element in the site or even search (&lt;code&gt;Ctrl+F&lt;/code&gt;) in &lt;code&gt;Element panel&lt;/code&gt; but that’s tedious. But wait, you know some JavaScript. So you can just do :-&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;code&gt;document.getElementById(&#39;some-selector&#39;);&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt; &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;document.querySelector(&#39;some-selector&#39;);&lt;/code&gt; _//heads up this is not same as &lt;code&gt;document.getElementById()&lt;/code&gt;
+Or, you could just use the alias of &lt;code&gt;document.querySelector(&#39;some-selector&#39;)&lt;/code&gt; in devtools which is &lt;code&gt;$(&#39;some-selector&#39;)&lt;/code&gt;. That’s it.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;selector&quot;&gt;$$(selector)&lt;/h4&gt;
+&lt;p&gt;You try doing &lt;code&gt;$(selector)&lt;/code&gt; but all you’re getting is just one result. And then you realize that it’s just doing what &lt;code&gt;document.querySelector()&lt;/code&gt; was doing and sighed at yourself. Now you need something aliased to &lt;code&gt;document.querySelectorAll()&lt;/code&gt;. And as you can already figure out from the heading that you can achieve just that by using &lt;code&gt;$$(selector)&lt;/code&gt; and it will list out an array of all the elements with that selector.&lt;/p&gt;
+
+&lt;h4 id=&quot;xpath&quot;&gt;$x(path)&lt;/h4&gt;
+&lt;p&gt;And if you happen to know &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/XPath&quot;&gt;XPath&lt;/a&gt; then there’s this &lt;code&gt;$x(path)&lt;/code&gt; for you too.&lt;/p&gt;
+
+&lt;h3 id=&quot;events&quot;&gt;Events&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;getEventListeners(object)&lt;/li&gt;
+  &lt;li&gt;monitorEvents(object, [events])&lt;/li&gt;
+  &lt;li&gt;unmonitorEvents( object, [events])&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;geteventlistenersobject&quot;&gt;getEventListeners(object)&lt;/h4&gt;
+&lt;p&gt;Okay, so you’re quite happy with what you have right now with all the query selectors at your disposal. And soon you realize that it’s about time to put some interactivity to your webpage. The most common thing to put interactivity in the webpage is to listen to any events in the page and act accordingly. Sure, if it’s a simple site, like this is, there may not be too much event in the page but as your webpage start getting more complex it’ll be crucial to know what event is called on a specific element. Again, you could do it manually and go to your editor and start searching for it or you could use tools that devtools provide you and be more productive. &lt;code&gt;getEventListenters(object)&lt;/code&gt; is just the function that helps you pinpoint what function is being invoked on the specified event. Let’s look at an example on how it works.
+Syntax:-
+&lt;code&gt;getEventListeners(DOM object,[events]);&lt;/code&gt;  &lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;getEventListeners(document.querySelector(&#39;testme&#39;), &quot;click&quot;);&lt;/code&gt;&lt;br /&gt;
+What the above statement does is, it lists out the click event for the &lt;code&gt;testme&lt;/code&gt; element. Of course, you could use &lt;code&gt;$(&#39;testme&#39;)&lt;/code&gt; or &lt;code&gt;$0&lt;/code&gt; to get that element but I’ll leave it up to you to be creative with what you can do.&lt;/p&gt;
+
+&lt;p&gt;The above returns a click object for that element and the function that will be invoked in the &lt;code&gt;listener&lt;/code&gt; key.&lt;br /&gt;
+Remember, the event parameter is totally optional. If you don’t specify it then it will return all the event that’s attached to that element.&lt;br /&gt;
+Do note however, that if you’re adding listenter with &lt;code&gt;jquery&lt;/code&gt; then the &lt;code&gt;listener&lt;/code&gt; will display &lt;code&gt;jquery&#39;s&lt;/code&gt; wrapper function than yours. This deserves a post on it’s own so I’m not going to dwell more on it but if you want to list the listener that’s been done purely by &lt;code&gt;addEventListener&lt;/code&gt; then &lt;code&gt;getEventListeners&lt;/code&gt; should be more than enough. If you want to play more then here’s the &lt;a href=&quot;http://jsfiddle.net/shriek/QXC5B/&quot;&gt;fiddle&lt;/a&gt; for you. (Note that since jsfiddle uses iframe you might not be able to find the element)&lt;/p&gt;
+
+&lt;h4 id=&quot;monitoreventsobjectevents&quot;&gt;monitorEvents(object,[events])&lt;/h4&gt;
+&lt;p&gt;So far you’ve learned how to get elements with aliased query selectors, list the functions that will get invoked on events. But once-a-while there will come a time when your event will get triggered when it’s not supposed to causing all kinds of weird behaviors. For that very instance you can use &lt;code&gt;monitorEvents()&lt;/code&gt; function. This does exactly what it says. It simply monitors the events and logs whenever the event gets triggered on the specified element. Looking back to our earlier example let’s now monitor events on that click now.
+&lt;code&gt;monitorEvents(document.querySelector(&#39;testme&#39;), &#39;click&#39;);&lt;/code&gt;
+This will log out Mouse Event object. According to the Paul Irish which was posted on &lt;a href=&quot;http://www.briangrinstead.com/blog/chrome-developer-tools-monitorevents&quot;&gt;this&lt;/a&gt; post. 
+&amp;gt; If the second argument is ‘mouse’, you’ll get all “mousedown”, “mouseup”, “click”, “dblclick”, “mousemove”, “mouseover”, “mouseout”, “mousewheel” events
+&amp;gt; If the second argument is ‘key’, you’ll get all “keydown”, “keyup”, “keypress”, “textInput” events
+&amp;gt; If the second argument is ‘touch’, you’ll get all “touchstart”, “touchmove”, “touchend”, “touchcancel” events. (See emulate touch events in devtools settings!!)
+&amp;gt; If the second argument is ‘control’, you’ll get all “resize”, “scroll”, “zoom”, “focus”, “blur”, “select”, “change”, “submit”, “reset” events.
+&amp;gt; If you don’t define a second argument, you’ll get all of the above, plus… “load”, “unload”, “abort”, “error”, “select”, “change”, “submit”, “reset”, “focus”, “blur”, “resize”, “scroll”, “search”, “devicemotion”, “deviceorientation” .
+The comment above should sum up the monitorEvents for you if not then here’s the official docs on 
+&lt;a href=&quot;https://developer.chrome.com/devtools/docs/commandline-api#monitoreventsobject-events&quot;&gt;Chrome&lt;/a&gt;
+&lt;a href=&quot;https://getfirebug.com/wiki/index.php/MonitorEvents#Event_groups&quot;&gt;Firefox&lt;/a&gt; (even though it’s doc for firebug, I think they’re fairly similar)&lt;/p&gt;
+
+&lt;h4 id=&quot;unmonitoreventsobject-events&quot;&gt;unmonitorEvents(object, [events])&lt;/h4&gt;
+&lt;p&gt;And if you want to stop monitoring for events then you can just use this function to stop listening. Also, you can stop listening to any one specific event if you were listening to multiple events. An example:-
+&lt;code&gt;monitorEvents(document.querySelector(&#39;.testme&#39;), &#39;mouse&#39;)&lt;/code&gt;
+&lt;code&gt;unmonitorEvents(document.querySelector(&#39;.testme&#39;),&#39;mouseover&#39;)&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;copy&quot;&gt;copy&lt;/h3&gt;
+&lt;p&gt;Often times whenever I’m trying to debug &lt;code&gt;json&lt;/code&gt; objects I have to copy the response or just have to search if the key exists or not. Sure I could just do &lt;code&gt;key in jsonResponseObj&lt;/code&gt; or other techniques but this is about copying the values from console to your clipboard. Simple, just do :-
+&lt;code&gt;copy(anything-that-you-want-to-copy)&lt;/code&gt;
+That’s all there is to it.&lt;/p&gt;
+
+&lt;h3 id=&quot;keysobj&quot;&gt;keys(obj)&lt;/h3&gt;
+&lt;p&gt;If you want to just list out the keys instead of checking it with &lt;code&gt;in&lt;/code&gt; keyword then you can just &lt;code&gt;keys&lt;/code&gt; function to list out all keys in your object.
+keys({‘hey’: ‘there’, ‘how’:’you’}); // [‘hey’, ‘how’]&lt;/p&gt;
+
+&lt;h3 id=&quot;valuesobj&quot;&gt;values(obj)&lt;/h3&gt;
+&lt;p&gt;Opposite to &lt;code&gt;keys&lt;/code&gt;, &lt;code&gt;values&lt;/code&gt; is used to list out all the values in an object.
+&lt;code&gt;values({&#39;hey&#39;: &#39;there&#39;, &#39;how&#39;:&#39;you&#39;})&lt;/code&gt; &lt;em&gt;//will result in [‘there’, ‘you’]&lt;/em&gt; 
+You can simple do the following to check if certain value exists or not if you want something similar to &lt;code&gt;in&lt;/code&gt; for values.
+&lt;code&gt;values({&#39;hey&#39;: &#39;there&#39;, &#39;how&#39;:&#39;you&#39;}).indexOf(&#39;hey&#39;) &amp;gt; -1&lt;/code&gt; &lt;em&gt;//true&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Besides mentioned above there are lot of things that console API is capable of doing simply because it is quite extensive and also because the docs are much more better at it. Also the API has slight variation on different browsers. Maybe in future I’ll point out some of the most useful functions but for now here are the docs.
+&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/console&quot;&gt;Firefox Console API&lt;/a&gt;
+&lt;a href=&quot;https://developer.chrome.com/devtools/docs/console-api&quot;&gt;Chrome Console API&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;In my next post I’ll be talking about &lt;code&gt;Debugger panel&lt;/code&gt;. Feel free to raise issues if you see something glaringly wrong in this post. &lt;/p&gt;
+</description>
+        <pubDate>Fri, 23 May 2014 20:34:19 -0500</pubDate>
+        <link>http://sinkingshriek.github.io/casual/devtools/2014/05/23/imagine-trying-to-build-a-skyscrapper-with-just-a-hammer/</link>
+        <guid isPermaLink="true">http://sinkingshriek.github.io/casual/devtools/2014/05/23/imagine-trying-to-build-a-skyscrapper-with-just-a-hammer/</guid>
+      </item>
+    
+      <item>
         <title>Start of yet another another blog</title>
         <description>&lt;p&gt;For the longest time I’ve thought I should write down what goes in my head. Or at-least, document what I’m experimenting, reading or even one of those crazy shower ideas. It’s not that I didn’t try. Oh, I tried alright. I’ve tried &lt;em&gt;Blogger&lt;/em&gt;, &lt;em&gt;Wordpress&lt;/em&gt; and more &lt;em&gt;Wordpress&lt;/em&gt; but the thought of logging in (even though my browser logs them for me) and writing in their editor sounded too much of a work. If you’ve not figured out already, then yes, I am one lazy guy but I’ve got a good excuse to say that. I’m a programmer and it just didn’t feel right.&lt;/p&gt;
 
