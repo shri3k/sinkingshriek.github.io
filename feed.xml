@@ -7,6 +7,86 @@
     <atom:link href="http://sinkingshriek.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>How node modules actually loads.</title>
+        <description>&lt;p&gt;I’ll take a break from the devtools post and post a quick info that I’ve been reading up this week.&lt;br /&gt;
+Before jumping to the topic let’s first look at what module really is.&lt;/p&gt;
+
+&lt;p&gt;In general, a module is nothing but a separated functionality (piece) of a program that gives structure to your code while adhering to two key features, &lt;strong&gt;low&lt;/strong&gt; &lt;code&gt;coupling&lt;/code&gt; and &lt;strong&gt;high&lt;/strong&gt; &lt;code&gt;cohesion&lt;/code&gt;, meaning that the piece of code that you write has very less or no dependency (&lt;strong&gt;low coupling&lt;/strong&gt;) and can be pluggable to almost any part of your other program (&lt;strong&gt;high cohesion&lt;/strong&gt;). Basically, these two terms go hand in hand and are co-related.&lt;/p&gt;
+
+&lt;p&gt;So, think of node modules as just a JavaScript module and you plug these modules in your program like this:-  &lt;/p&gt;
+
+&lt;p&gt;`var myModule = require(‘./myModule’);’&lt;/p&gt;
+
+&lt;p&gt;This is what the meat of this post is going to be. What exactly is happening when you do &lt;code&gt;require&lt;/code&gt;? Before I go any further notice that &lt;code&gt;./&lt;/code&gt; before the module name in that require? Whenever you supply &lt;code&gt;./&lt;/code&gt; to &lt;code&gt;require&lt;/code&gt; then node will search for the module in the current working directory or also called &lt;code&gt;relative path&lt;/code&gt;. So if you had your file structure as follows:-&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;--myRootDirectory
+----index.js //let&#39;s say this is where your require(&#39;./myModule&#39;) is
+----myModule.js
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then doing &lt;code&gt;./&lt;/code&gt; will immediately search inside the current directory. If you would feel like putting your modules in a directory then that’s perfectly fine too. Just add &lt;code&gt;./directory_name/myAnotherModule&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;On a similar note, you can also do:-&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;var myModule = require(&#39;/myModule&#39;);&lt;/code&gt; //note the absence of &lt;code&gt;.&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;for &lt;code&gt;absolute path&lt;/code&gt;. This looks at the root of your app instead of the current directory. So if you had:-&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;--myRootDirectory
+----myAnotherDirectory
+------myModule.js //let&#39;s say this is where your require(&#39;/myAnotherModule&#39;) is
+----index.js 
+----myAnotherModule.js
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Also, do note that since node already expects a JavaScript file you don’t have to put the &lt;code&gt;.js&lt;/code&gt; extension at th end.&lt;/p&gt;
+
+&lt;p&gt;So that was with the &lt;code&gt;./&lt;/code&gt; and ‘/’ at the prefix of your module but there’s another mechanism node follows to look for your modules. If you don’t supply the &lt;code&gt;./&lt;/code&gt; at the prefix then the following steps is followed by node to search for your module.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Checks if it’s a core module.&lt;/li&gt;
+  &lt;li&gt;Checks the module in &lt;code&gt;node_modules&lt;/code&gt; directory in the current directory and moves up one directory until the root of your app.&lt;/li&gt;
+  &lt;li&gt;Lastly checks in the path of &lt;code&gt;NODE_MODULE&lt;/code&gt; that’s specified in your system’s &lt;code&gt;environment variable&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;At the end throws exception if nothing is found.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The core module that node checks in the beginning are the core modules that node provides like &lt;code&gt;http&lt;/code&gt;, &lt;code&gt;fs&lt;/code&gt; which will take precedence over any other steps.&lt;br /&gt;
+If it’s not a core module then it starts looking for &lt;code&gt;node_modules&lt;/code&gt; until it reaches the root of your application. Something like this:-&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;--myRootDirectory
+--node_modules
+----myModule.js
+--lib
+----myAnotherModule.js //you can require(&#39;myModule&#39;) here.
+--index.js // and here require(&#39;myModule&#39;) will reside.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;See how &lt;code&gt;lib&lt;/code&gt; directory doesn’t have &lt;code&gt;node_modules&lt;/code&gt; and it goes up one level in &lt;code&gt;myRootDirectory&lt;/code&gt; where it does have &lt;code&gt;node_modules&lt;/code&gt; directory which indeed has &lt;code&gt;myModule&lt;/code&gt;.&lt;br /&gt;
+Also, in the index.js, which is inside &lt;code&gt;myRootDirectory&lt;/code&gt; has &lt;code&gt;node_modules&lt;/code&gt; directory so it just immediately knows where &lt;code&gt;myModule&lt;/code&gt; is.&lt;br /&gt;
+NOTE:- node doesn’t traverse down so if you had something like this:-&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;--myRootDirectory
+--node_modules
+----myModule.js
+--lib
+----node_modules
+------myInsideModule.js
+----myAnotherModule.js //you can require(&#39;myInsideModule&#39;) here.
+--index.js // but not here. THIS WILL NOT WORK require(&#39;myInsideModule&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;However, if your module is inside your system path (&lt;code&gt;ENVIRONMENT VARIABLE&lt;/code&gt;) then your module should load just fine. For Windows users it’s usually in 
+&lt;code&gt;c:\Program Files\Node\lib&lt;/code&gt; and for Linux users just &lt;code&gt;echo PATH&lt;/code&gt; and google on how to add path in your &lt;code&gt;environment variable&lt;/code&gt;. &lt;/p&gt;
+
+&lt;p&gt;You can play with the &lt;a href=&quot;https://github.com/sinkingshriek/load_node_module&quot;&gt;sample node_modules&lt;/a&gt; that I’ve made ready for you play. Check out the commits too on what mistakes I made to learn from it.  &lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 29 May 2014 21:34:19 -0500</pubDate>
+        <link>http://sinkingshriek.github.io/node/2014/05/29/how-node-modules-load/</link>
+        <guid isPermaLink="true">http://sinkingshriek.github.io/node/2014/05/29/how-node-modules-load/</guid>
+      </item>
+    
+      <item>
         <title>Imagine trying to build a skyscraper with just a wrench.</title>
         <description>&lt;p&gt;Think of us, devs, as construction workers. Let’s just pretend for now that we’re construction workers. You’re given all these ideas and blueprints by architects and business folks and everything that’s needed for construction. You are provided with all the possible resources that you can possibly think of to get this herculean task done but the problem is that you have no clue how to operate those big cranes, excavators, forklifts etc but you’re an expert in using wrench. I’m not saying it’s completely useless, well maybe to screw things when one of the nuts come lose in those bigger machinery but the point is you need to learn tools if you’re even conceiving of making big web-apps. This doesn’t just apply to web-apps. This applies to pretty much in all fields. So you, as a web-developer better know your tools well.&lt;/p&gt;
 
