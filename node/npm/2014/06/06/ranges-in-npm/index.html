@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>thisisyojan</title>
+    <title>Ranges in npm.</title>
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="We're all spiders weaving the web.">
-    <link rel="canonical" href="http://sinkingshriek.github.io/">
+    <link rel="canonical" href="http://sinkingshriek.github.io/node/npm/2014/06/06/ranges-in-npm/">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css">
@@ -53,38 +53,50 @@
 
     <div class="page-content">
       <div class="wrap">
-      <div class="home">
+      <div class="post">
 
-  <h1>Posts</h1>
+  <header class="post-header">
+    <h1>Ranges in npm.</h1>
+    <p class="meta">Jun 6, 2014</p>
+  </header>
 
-  <ul class="posts">
-    
-      <li>
-        <span class="post-date">Jun 6, 2014</span>
-        <a class="post-link" href="/node/npm/2014/06/06/ranges-in-npm/">Ranges in npm.</a>
-      </li>
-    
-      <li>
-        <span class="post-date">May 29, 2014</span>
-        <a class="post-link" href="/node/2014/05/29/how-node-modules-load/">How node modules actually load.</a>
-      </li>
-    
-      <li>
-        <span class="post-date">May 23, 2014</span>
-        <a class="post-link" href="/casual/devtools/2014/05/23/imagine-trying-to-build-a-skyscrapper-with-just-a-hammer/">Imagine trying to build a skyscraper with just a wrench.</a>
-      </li>
-    
-      <li>
-        <span class="post-date">May 10, 2014</span>
-        <a class="post-link" href="/casual/2014/05/10/start-of-something-normal/">Start of yet another another blog</a>
-      </li>
-    
-  </ul>
+  <article class="post-content">
+  <p>I’ll keep this post really short as I have been quite busy and will still be for the next two weeks. </p>
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+<p>So, this week in one of the JS meetup <a href="https://twitter.com/mrjedmao">Jed Mao</a> brought up a really good point on why he uses <code>npm</code> from the <code>cli</code> instead of writing the package name in <code>package.json</code> and just doing <code>npm install</code>. </p>
+
+<p>If you want to make any sense of the paragraph below then make sure that you know what <a href="http://semver.org/"><code>semver</code></a> is. </p>
+
+<p>Before I put forth his reasoning, I was all up for just writing our <code>deps</code> in <code>package.json</code> and just doing <code>npm install</code> from the cli. But there are something called <code>ranges</code> that you can specify in the version number for your dependencies so that only those dependencies that are in the range gets downloaded. The comprehensive list of ranges is posted at the link below but in summary here are the ranges that you can specify :-</p>
+
+<p><code>&gt;1.0.0</code> :-<br />
+greater than a specific version number. You can also use <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code><br />
+<code>&gt;1.0.0  &lt;2.0.0</code> || <code>1.0.0 - 2.0.0</code> :-<br />
+whatever the version between v1 and v2. You can use the first or the second one. Again, you can use <code>&lt;=</code>, <code>&gt;=</code> likewise.<br />
+<code>~1.0.0</code> :-<br />
+accepts all patches, meaning <code>&gt;=1.0.1 - &lt;1.1.0</code><br />
+<code>^1.0.0</code> :-<br />
+accepts all pre-releases (minor release), meaning <code>&gt;=1.0.0 - &lt;2.0.0</code><br />
+<code>1.0.x</code> || <code>1.0.*</code> || <code>1.0</code> :-<br />
+accepts all the version that matches <code>1.0</code> versions<br />
+<code>*</code> || <code>x</code> || <code>""</code> :-<br />
+any version whatsoever (usually the recent one)  </p>
+
+<p>The last one on the list was my proposal to include in the <code>package.json</code> file so that one doesn’t have to go lookup the version number for each <code>dep</code>. But like Jed pointed out it can have bad consequences and I was naive to even think <code>*</code> was an option. <code>*</code> means all the major, minor and patches. Major changes could mean that it will break your application if you rely on version specific features. </p>
+
+<p>So, Jed’s advice made perfect sense to me. His advice was to just use <code>cli</code> like so :-</p>
+
+<p><code>npm install express mongodb mocha sinon grunt</code> </p>
+
+<p>Doing the above will install the latest stable build and npm will also put the actual version name with <code>^</code> at the prefix. Again, <code>^</code> will install all the pre-releases and should not break your application.</p>
+
+<p>To keep track of your versions you can also use <a href="https://gemnasium.com/">Gemnasium</a> as mentioned by Jed in the meetup. </p>
+
+<p><a href="https://github.com/isaacs/node-semver#ranges">More about ranges from Issac.</a></p>
+
+  </article>
 
 </div>
-
       </div>
     </div>
 
