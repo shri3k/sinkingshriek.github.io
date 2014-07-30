@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>About</title>
+    <title>exports vs module.exports</title>
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="In a way, we're all spiders weaving the web.">
-    <link rel="canonical" href="http://sinkingshriek.github.io/about/">
+    <link rel="canonical" href="http://sinkingshriek.github.io/casual/node/modules/2014/06/28/exports-vs-module-exports/">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css">
@@ -56,15 +56,73 @@
       <div class="post">
 
   <header class="post-header">
-    <h1>About</h1>
+    <h1>exports vs module.exports</h1>
+    <p class="meta">Jun 28, 2014</p>
   </header>
 
   <article class="post-content">
-  <p>Primarily a web developer, but not afraid to venture into other fields as well.  I love the dynamicity of the web and that is why it is a no brainer for me to start this blog. </p>
+  <p>I’ve been out for quite some time not just two weeks as I had mentioned in my last post. I decided to take a break from coding and travel a bit. I now officially love Boston, in summer atleast. Of course this is not relevant to what the topic at hand is but if you were like me who spends pretty much his entire life in front of computer then I encourage you to go travel and see new places. It will definitely open up your mind to new things. With that insightful words about life, let’s now dive into what exports and module.exports actually does.</p>
 
-<p>Posted mostly weekly on the things I find interesting and useful for my fellow devs.</p>
+<p>I’ll assume that you already know basics of how NodeJS uses modules, if not then I highly recommend taking a look at <a href="http://wiki.commonjs.org/wiki/Modules/1.1.1">CommonJS</a> module which NodeJS follows.<br />
+So, you’ve seen people use both <code>exports</code> and <code>module.exports</code> while exporting their module. Before that, let’s first uncover on what really gets exported.</p>
 
-<p><a href="https://github.com/sinkingshriek/jekyll-content">Send a pull request</a> if you have something to share and I’ll put them here.</p>
+<h3 id="what-really-gets-exported">What really gets exported</h3>
+<p>Quite simply, <code>module.exports</code> is the only thing that gets exported. So how exactly does <code>exports</code> export the module? </p>
+
+<h3 id="exports-is-just-a-global-reference-to-moduleexports">exports is just a global reference to module.exports</h3>
+<p>If you understand how referencing works in JavaScript then this is straight forward. <code>exports</code> is just pointing <code>module.exports</code> which is why you cannot reference functions or any other objects to it, if you do, then whatever that you were trying to export will simply not work because the reference has been broken. Let’s look at an example:-</p>
+
+<pre><code>function Calculator(x,y){
+	this.x = x;
+	this.y = y;
+}
+Calculate.prototype = {
+	constructor: Calculator,
+	add : function(){
+		return this.x + this.y;
+	},
+	subtract: function(){
+		return this.x - this.y;
+	}
+}
+
+exports = Calculator; // This will not work.
+</code></pre>
+
+<p>Don’t worry about the code so much except the last line. The reason that it fails, as said above, is because it’s now referencing the <code>Calculator</code> function and since <code>module.exports</code> is the only thing that gets exported <code>exports</code> just sits there not knowing what to do. However, do note that the following however works:-</p>
+
+<pre><code>function Calculator(x,y){
+	this.x = x;
+	this.y = y;
+}
+Calculate.prototype = {
+	constructor: Calculator,
+	add : function(){
+		return this.x + this.y;
+	},
+	subtract: function(){
+		return this.x - this.y;
+	}
+}
+
+exports.Calculator = Calculator; //This will however work.
+</code></pre>
+
+<p>Think for a moment on why the above works. </p>
+
+<p>If you remove the veil of <code>exports</code> then the above code is essentially doing the following:-  </p>
+
+<pre><code>module.exports.Calculator = Calculator;  
+</code></pre>
+
+<p>Why? Since you haven’t really broken the reference of <code>exports</code> to <code>module.exports</code> and only adding properties to <code>module.exports</code> the above code should work.</p>
+
+<p>If you really want to use <code>exports</code> and be able to reference it to your function then you can also do this:-  </p>
+
+<pre><code>module.exports = exports = Calculator;
+</code></pre>
+
+<p>I hope that clarifies a little on <code>module.exports</code> and <code>exports</code> to you. It’s just a little concept but I had the hardest time figuring out why some uses one over another. <code>module.exports</code> is more elegant way to export the module because it’s “OOP” way. Don’t take my word for it that’s what people say. :)</p>
 
 
   </article>

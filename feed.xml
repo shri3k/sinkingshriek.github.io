@@ -2,9 +2,80 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>thisisyojan</title>
-    <description>We&#39;re all spiders weaving the web.</description>
+    <description>In a way, we&#39;re all spiders weaving the web.</description>
     <link>http://sinkingshriek.github.io/</link>
     <atom:link href="http://sinkingshriek.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>exports vs module.exports</title>
+        <description>&lt;p&gt;I’ve been out for quite some time not just two weeks as I had mentioned in my last post. I decided to take a break from coding and travel a bit. I now officially love Boston, in summer atleast. Of course this is not relevant to what the topic at hand is but if you were like me who spends pretty much his entire life in front of computer then I encourage you to go travel and see new places. It will definitely open up your mind to new things. With that insightful words about life, let’s now dive into what exports and module.exports actually does.&lt;/p&gt;
+
+&lt;p&gt;I’ll assume that you already know basics of how NodeJS uses modules, if not then I highly recommend taking a look at &lt;a href=&quot;http://wiki.commonjs.org/wiki/Modules/1.1.1&quot;&gt;CommonJS&lt;/a&gt; module which NodeJS follows.&lt;br /&gt;
+So, you’ve seen people use both &lt;code&gt;exports&lt;/code&gt; and &lt;code&gt;module.exports&lt;/code&gt; while exporting their module. Before that, let’s first uncover on what really gets exported.&lt;/p&gt;
+
+&lt;h3 id=&quot;what-really-gets-exported&quot;&gt;What really gets exported&lt;/h3&gt;
+&lt;p&gt;Quite simply, &lt;code&gt;module.exports&lt;/code&gt; is the only thing that gets exported. So how exactly does &lt;code&gt;exports&lt;/code&gt; export the module? &lt;/p&gt;
+
+&lt;h3 id=&quot;exports-is-just-a-global-reference-to-moduleexports&quot;&gt;exports is just a global reference to module.exports&lt;/h3&gt;
+&lt;p&gt;If you understand how referencing works in JavaScript then this is straight forward. &lt;code&gt;exports&lt;/code&gt; is just pointing &lt;code&gt;module.exports&lt;/code&gt; which is why you cannot reference functions or any other objects to it, if you do, then whatever that you were trying to export will simply not work because the reference has been broken. Let’s look at an example:-&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function Calculator(x,y){
+	this.x = x;
+	this.y = y;
+}
+Calculate.prototype = {
+	constructor: Calculator,
+	add : function(){
+		return this.x + this.y;
+	},
+	subtract: function(){
+		return this.x - this.y;
+	}
+}
+
+exports = Calculator; // This will not work.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Don’t worry about the code so much except the last line. The reason that it fails, as said above, is because it’s now referencing the &lt;code&gt;Calculator&lt;/code&gt; function and since &lt;code&gt;module.exports&lt;/code&gt; is the only thing that gets exported &lt;code&gt;exports&lt;/code&gt; just sits there not knowing what to do. However, do note that the following however works:-&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;function Calculator(x,y){
+	this.x = x;
+	this.y = y;
+}
+Calculate.prototype = {
+	constructor: Calculator,
+	add : function(){
+		return this.x + this.y;
+	},
+	subtract: function(){
+		return this.x - this.y;
+	}
+}
+
+exports.Calculator = Calculator; //This will however work.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Think for a moment on why the above works. &lt;/p&gt;
+
+&lt;p&gt;If you remove the veil of &lt;code&gt;exports&lt;/code&gt; then the above code is essentially doing the following:-  &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;module.exports.Calculator = Calculator;  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Why? Since you haven’t really broken the reference of &lt;code&gt;exports&lt;/code&gt; to &lt;code&gt;module.exports&lt;/code&gt; and only adding properties to &lt;code&gt;module.exports&lt;/code&gt; the above code should work.&lt;/p&gt;
+
+&lt;p&gt;If you really want to use &lt;code&gt;exports&lt;/code&gt; and be able to reference it to your function then you can also do this:-  &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;module.exports = exports = Calculator;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I hope that clarifies a little on &lt;code&gt;module.exports&lt;/code&gt; and &lt;code&gt;exports&lt;/code&gt; to you. It’s just a little concept but I had the hardest time figuring out why some uses one over another. &lt;code&gt;module.exports&lt;/code&gt; is more elegant way to export the module because it’s “OOP” way. Don’t take my word for it that’s what people say. :)&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 28 Jun 2014 20:34:19 -0500</pubDate>
+        <link>http://sinkingshriek.github.io/casual/node/modules/2014/06/28/exports-vs-module-exports/</link>
+        <guid isPermaLink="true">http://sinkingshriek.github.io/casual/node/modules/2014/06/28/exports-vs-module-exports/</guid>
+      </item>
     
       <item>
         <title>Ranges in npm.</title>
