@@ -7,6 +7,19 @@
     <atom:link href="http://sinkingshriek.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Creating chains </title>
+        <description>&lt;p&gt;Just a quick tip this week. Although, most of you know about &lt;code&gt;this&lt;/code&gt; already, you can return your prototype function with &lt;code&gt;this&lt;/code&gt; to make them chainable.
+Below is the snippet that will enable that:-
+&lt;script src=&quot;https://gist.github.com/sinkingshriek/f12bb33a19e383c3ec53.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;This is technically what jQuery uses for their functions to be chainable and I just recently found out about. Makes your code lot more dynamic this way.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 09 Jul 2014 20:34:19 -0500</pubDate>
+        <link>http://sinkingshriek.github.io/javascript/protip/2014/07/09/creating-chains/</link>
+        <guid isPermaLink="true">http://sinkingshriek.github.io/javascript/protip/2014/07/09/creating-chains/</guid>
+      </item>
+    
+      <item>
         <title>exports vs module.exports</title>
         <description>&lt;p&gt;I’ve been out for quite some time not just two weeks as I had mentioned in my last post. I decided to take a break from coding and travel a bit. I now officially love Boston, in summer atleast. Of course this is not relevant to what the topic at hand is but if you were like me who spends pretty much his entire life in front of computer then I encourage you to go travel and see new places. It will definitely open up your mind to new things. With that insightful words about life, let’s now dive into what exports and module.exports actually does.&lt;/p&gt;
 
