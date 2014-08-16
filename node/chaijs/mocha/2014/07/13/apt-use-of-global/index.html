@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>thisisyojan</title>
+    <title>when it's apt to use global</title>
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="In a way, we're all spiders weaving the web.">
-    <link rel="canonical" href="http://sinkingshriek.github.io/">
+    <link rel="canonical" href="http://sinkingshriek.github.io/node/chaijs/mocha/2014/07/13/apt-use-of-global/">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css">
@@ -53,53 +53,75 @@
 
     <div class="page-content">
       <div class="wrap">
-      <div class="home">
+      <div class="post">
 
-  <h1>Posts</h1>
+  <header class="post-header">
+    <h1>when it's apt to use global</h1>
+    <p class="meta">Jul 13, 2014</p>
+  </header>
 
-  <ul class="posts">
-    
-      <li>
-        <span class="post-date">Jul 13, 2014</span>
-        <a class="post-link" href="/node/chaijs/mocha/2014/07/13/apt-use-of-global/">when it's apt to use global</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 9, 2014</span>
-        <a class="post-link" href="/javascript/protip/2014/07/09/creating-chains/">Creating chains </a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 28, 2014</span>
-        <a class="post-link" href="/casual/node/modules/2014/06/28/exports-vs-module-exports/">exports vs module.exports</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jun 6, 2014</span>
-        <a class="post-link" href="/node/npm/2014/06/06/ranges-in-npm/">Ranges in npm.</a>
-      </li>
-    
-      <li>
-        <span class="post-date">May 29, 2014</span>
-        <a class="post-link" href="/node/2014/05/29/how-node-modules-load/">How node modules actually load.</a>
-      </li>
-    
-      <li>
-        <span class="post-date">May 23, 2014</span>
-        <a class="post-link" href="/casual/devtools/2014/05/23/imagine-trying-to-build-a-skyscrapper-with-just-a-hammer/">Imagine trying to build a skyscraper with just a wrench.</a>
-      </li>
-    
-      <li>
-        <span class="post-date">May 10, 2014</span>
-        <a class="post-link" href="/casual/2014/05/10/start-of-something-normal/">Start of yet another another blog</a>
-      </li>
-    
-  </ul>
+  <article class="post-content">
+  <p>Pretty much almost any programmer that you meet would say that sticking variables to <code>global</code> object is a bad idea. JavaScript was pretty notorious for this one. Forget to put <code>var</code> in your variable inside the <code>function</code> and it goes straight to the <code>window</code>(global) object if you forgot <code>'use strict';</code> in your function or in global context. It’s still true for node but instead of <code>window</code> object it gets added to <code>global</code> object.<br />
+<code>Global</code> is well, global object in node, just like <code>window</code> in browsers. You can put your variables in global object by either not declaring it with <code>var</code> or using <code>global</code> or <code>GLOBAL</code>. <em><code>GLOBAL</code> is just an alias for global.</em> </p>
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+<p>So, let’s just demonstrate the above with some code. Create two files with the following content and then run <code>node index</code>;</p>
+
+<script src="https://gist.github.com/sinkingshriek/7ac40170e5d2606b4180.js"></script>
+
+<p>As you can see from the above code that we didn’t really export <code>someVal</code> from globalMe and yet the <code>index.js</code> was still able to find it. And as you may have already guessed it, it’s because that we’re sticking this into <code>global</code> object.</p>
+
+<p>Okay, so enough of the demonstration and to get to the point on the real topic at hand. Why would we ever want to use it if it’s a bad practice?<br />
+There are times when you just can’t avoid using <code>global</code> object. Just recently I <em>had</em> to use <code>global</code> object to get my code running which brings me to another topic.  </p>
+
+<h2 id="how-to-use-chaijs-in-your-mochaopts-">How to use chaijs in your mocha.opts ?</h2>
+
+<p>I won’t go into details on what <code>chai</code> or <code>mocha</code> is in this post. And if you’ve been playing around with mocha then you know you can have <code>mocha.opts</code> file in your <code>test</code> folder which is basically options for your <code>mocha</code> command. So instead of doing:-</p>
+
+<pre><code>mocha --required should --reporter nyan
+</code></pre>
+
+<p>You can do :-</p>
+
+<pre><code>//mocha.opts
+--required should
+--reporter nyan
+</code></pre>
+
+<p>But since <code>chaijs</code> is a bundle of three different assertion libraries you can’t do <code>mocha --required chai().should</code>. That’s just absurd. Your command line doesn’t invoke functions. So how do you go about achieving <code>chai</code> with <code>mocha</code>? Globals!!</p>
+
+<p>So if you create a <code>node_module</code> with some file called..let’s say <code>chai-mocha-wrap.js</code> with the following globals :-</p>
+
+<script src="https://gist.github.com/sinkingshriek/40e6cd6728e0c39e883d.js"></script>
+
+<p>Then you should be able to do :-</p>
+
+<pre><code>//mocha.opts
+--required chai-mocha
+</code></pre>
+
+<p>And have chai assertion on all your mocha tests. You also have the option to use <code>should</code>, <code>expect</code> or <code>assert</code> (yay freedom!!).</p>
+
+<p>Although, this is an ideal case for the usage of <code>global</code> you should always, <strong>always</strong> document why you’re using <code>global</code>.</p>
+
+
+  </article>
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+var disqus_shortname = 'thisisyojan'; // required: replace example with your forum shortname
+
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
 
 </div>
-
       </div>
     </div>
     <footer class="site-footer">

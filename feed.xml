@@ -2,9 +2,59 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>thisisyojan</title>
-    <description>In a way, we&#39;re all spiders weaving the web.</description>
+    <description>In a way, we're all spiders weaving the web.</description>
     <link>http://sinkingshriek.github.io/</link>
     <atom:link href="http://sinkingshriek.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>when it's apt to use global</title>
+        <description>&lt;p&gt;Pretty much almost any programmer that you meet would say that sticking variables to &lt;code&gt;global&lt;/code&gt; object is a bad idea. JavaScript was pretty notorious for this one. Forget to put &lt;code&gt;var&lt;/code&gt; in your variable inside the &lt;code&gt;function&lt;/code&gt; and it goes straight to the &lt;code&gt;window&lt;/code&gt;(global) object if you forgot &lt;code&gt;'use strict';&lt;/code&gt; in your function or in global context. It’s still true for node but instead of &lt;code&gt;window&lt;/code&gt; object it gets added to &lt;code&gt;global&lt;/code&gt; object.&lt;br /&gt;
+&lt;code&gt;Global&lt;/code&gt; is well, global object in node, just like &lt;code&gt;window&lt;/code&gt; in browsers. You can put your variables in global object by either not declaring it with &lt;code&gt;var&lt;/code&gt; or using &lt;code&gt;global&lt;/code&gt; or &lt;code&gt;GLOBAL&lt;/code&gt;. &lt;em&gt;&lt;code&gt;GLOBAL&lt;/code&gt; is just an alias for global.&lt;/em&gt; &lt;/p&gt;
+
+&lt;p&gt;So, let’s just demonstrate the above with some code. Create two files with the following content and then run &lt;code&gt;node index&lt;/code&gt;;&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/sinkingshriek/7ac40170e5d2606b4180.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;As you can see from the above code that we didn’t really export &lt;code&gt;someVal&lt;/code&gt; from globalMe and yet the &lt;code&gt;index.js&lt;/code&gt; was still able to find it. And as you may have already guessed it, it’s because that we’re sticking this into &lt;code&gt;global&lt;/code&gt; object.&lt;/p&gt;
+
+&lt;p&gt;Okay, so enough of the demonstration and to get to the point on the real topic at hand. Why would we ever want to use it if it’s a bad practice?&lt;br /&gt;
+There are times when you just can’t avoid using &lt;code&gt;global&lt;/code&gt; object. Just recently I &lt;em&gt;had&lt;/em&gt; to use &lt;code&gt;global&lt;/code&gt; object to get my code running which brings me to another topic.  &lt;/p&gt;
+
+&lt;h2 id=&quot;how-to-use-chaijs-in-your-mochaopts-&quot;&gt;How to use chaijs in your mocha.opts ?&lt;/h2&gt;
+
+&lt;p&gt;I won’t go into details on what &lt;code&gt;chai&lt;/code&gt; or &lt;code&gt;mocha&lt;/code&gt; is in this post. And if you’ve been playing around with mocha then you know you can have &lt;code&gt;mocha.opts&lt;/code&gt; file in your &lt;code&gt;test&lt;/code&gt; folder which is basically options for your &lt;code&gt;mocha&lt;/code&gt; command. So instead of doing:-&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mocha --required should --reporter nyan
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can do :-&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//mocha.opts
+--required should
+--reporter nyan
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But since &lt;code&gt;chaijs&lt;/code&gt; is a bundle of three different assertion libraries you can’t do &lt;code&gt;mocha --required chai().should&lt;/code&gt;. That’s just absurd. Your command line doesn’t invoke functions. So how do you go about achieving &lt;code&gt;chai&lt;/code&gt; with &lt;code&gt;mocha&lt;/code&gt;? Globals!!&lt;/p&gt;
+
+&lt;p&gt;So if you create a &lt;code&gt;node_module&lt;/code&gt; with some file called..let’s say &lt;code&gt;chai-mocha-wrap.js&lt;/code&gt; with the following globals :-&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/sinkingshriek/40e6cd6728e0c39e883d.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;Then you should be able to do :-&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//mocha.opts
+--required chai-mocha
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And have chai assertion on all your mocha tests. You also have the option to use &lt;code&gt;should&lt;/code&gt;, &lt;code&gt;expect&lt;/code&gt; or &lt;code&gt;assert&lt;/code&gt; (yay freedom!!).&lt;/p&gt;
+
+&lt;p&gt;Although, this is an ideal case for the usage of &lt;code&gt;global&lt;/code&gt; you should always, &lt;strong&gt;always&lt;/strong&gt; document why you’re using &lt;code&gt;global&lt;/code&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 13 Jul 2014 20:34:19 -0500</pubDate>
+        <link>http://sinkingshriek.github.io/node/chaijs/mocha/2014/07/13/apt-use-of-global/</link>
+        <guid isPermaLink="true">http://sinkingshriek.github.io/node/chaijs/mocha/2014/07/13/apt-use-of-global/</guid>
+      </item>
     
       <item>
         <title>Creating chains </title>
@@ -144,7 +194,7 @@ Before jumping to the topic let’s first look at what module really is.&lt;/p&g
 &lt;p&gt;This is what the meat of this post is going to be. What exactly is happening when you do &lt;code&gt;require&lt;/code&gt;? Before I go any further notice that &lt;code&gt;./&lt;/code&gt; before the module name in that require? Whenever you supply &lt;code&gt;./&lt;/code&gt; to &lt;code&gt;require&lt;/code&gt; then node will search for the module in the current working directory or also called &lt;code&gt;relative path&lt;/code&gt;. So if you had your file structure as follows:-&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;--myRootDirectory
-----index.js //let&#39;s say this is where your require(&#39;./myModule&#39;) is
+----index.js //let's say this is where your require('./myModule') is
 ----myModule.js
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -152,13 +202,13 @@ Before jumping to the topic let’s first look at what module really is.&lt;/p&g
 
 &lt;p&gt;On a similar note, you can also do:-&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;var myModule = require(&#39;/myModule&#39;);&lt;/code&gt; //note the absence of &lt;code&gt;.&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;var myModule = require('/myModule');&lt;/code&gt; //note the absence of &lt;code&gt;.&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;for &lt;code&gt;absolute path&lt;/code&gt;. This looks at the root of your app instead of the current directory. So if you had:-&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;--myRootDirectory
 ----myAnotherDirectory
-------myModule.js //let&#39;s say this is where your require(&#39;/myAnotherModule&#39;) is
+------myModule.js //let's say this is where your require('/myAnotherModule') is
 ----index.js 
 ----myAnotherModule.js
 &lt;/code&gt;&lt;/pre&gt;
@@ -181,8 +231,8 @@ If it’s not a core module then it starts looking for &lt;code&gt;node_modules&
 --node_modules
 ----myModule.js
 --lib
-----myAnotherModule.js //you can require(&#39;myModule&#39;) here.
---index.js // and here require(&#39;myModule&#39;) will reside.
+----myAnotherModule.js //you can require('myModule') here.
+--index.js // and here require('myModule') will reside.
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;See how &lt;code&gt;lib&lt;/code&gt; directory doesn’t have &lt;code&gt;node_modules&lt;/code&gt; and it goes up one level in &lt;code&gt;myRootDirectory&lt;/code&gt; where it does have &lt;code&gt;node_modules&lt;/code&gt; directory which indeed has &lt;code&gt;myModule&lt;/code&gt;.&lt;br /&gt;
@@ -195,8 +245,8 @@ NOTE:- node doesn’t traverse down so if you had something like this:-&lt;/p&gt
 --lib
 ----node_modules
 ------myInsideModule.js
-----myAnotherModule.js //you can require(&#39;myInsideModule&#39;) here.
---index.js // but not here. THIS WILL NOT WORK require(&#39;myInsideModule&#39;)
+----myAnotherModule.js //you can require('myInsideModule') here.
+--index.js // but not here. THIS WILL NOT WORK require('myInsideModule')
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;However, if your module is inside your system path (&lt;code&gt;ENVIRONMENT VARIABLE&lt;/code&gt;) then your module should load just fine. For Windows users it’s usually in 
@@ -292,7 +342,7 @@ So this:-&lt;br /&gt;
 &lt;p&gt;So, doing &lt;code&gt;$_&lt;/code&gt; should be pretty clear now that you understand what expression is. Again, &lt;code&gt;$_&lt;/code&gt; will return the last evaluated expression in the console. To be honest, I don’t use this as much. Pressing &lt;code&gt;up&lt;/code&gt; arrow is far more easier than typing &lt;code&gt;$_&lt;/code&gt;. But, just in case you need this then you know there’s a way to do it.&lt;/p&gt;
 
 &lt;h3 id=&quot;last-five-dom-elements-0---4&quot;&gt;Last five DOM elements &lt;code&gt;$0 - $4&lt;/code&gt;&lt;/h3&gt;
-&lt;p&gt;Say, you just inspected (right-click on website and select Inspect) something on your website and you want to grab that element. You could do &lt;code&gt;document.querySelector(&#39;some-class-or-id-or-tag&#39;)&lt;/code&gt; but why waste time when you can just do &lt;code&gt;$0&lt;/code&gt;. Do that again and the item that was stored in &lt;code&gt;$0&lt;/code&gt; earlier will move to &lt;code&gt;$1&lt;/code&gt; and so on till &lt;code&gt;$4&lt;/code&gt;. It’s not necessary that you have to inspect the element every-time from the website. You can simply select it on &lt;code&gt;Element Panel&lt;/code&gt; if you already know where that element is and then use it on console with &lt;code&gt;$0&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Say, you just inspected (right-click on website and select Inspect) something on your website and you want to grab that element. You could do &lt;code&gt;document.querySelector('some-class-or-id-or-tag')&lt;/code&gt; but why waste time when you can just do &lt;code&gt;$0&lt;/code&gt;. Do that again and the item that was stored in &lt;code&gt;$0&lt;/code&gt; earlier will move to &lt;code&gt;$1&lt;/code&gt; and so on till &lt;code&gt;$4&lt;/code&gt;. It’s not necessary that you have to inspect the element every-time from the website. You can simply select it on &lt;code&gt;Element Panel&lt;/code&gt; if you already know where that element is and then use it on console with &lt;code&gt;$0&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h3 id=&quot;query-selectors&quot;&gt;Query Selectors&lt;/h3&gt;
 &lt;ul&gt;
@@ -309,16 +359,16 @@ So this:-&lt;br /&gt;
     &lt;table&gt;
       &lt;tbody&gt;
         &lt;tr&gt;
-          &lt;td&gt;&lt;code&gt;document.getElementById(&#39;some-selector&#39;);&lt;/code&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;code&gt;document.getElementById('some-selector');&lt;/code&gt;&lt;/td&gt;
           &lt;td&gt; &lt;/td&gt;
         &lt;/tr&gt;
       &lt;/tbody&gt;
     &lt;/table&gt;
   &lt;/li&gt;
-  &lt;li&gt;&lt;code&gt;document.querySelector(&#39;some-selector&#39;);&lt;/code&gt; &lt;em&gt;//heads up this is not same as &lt;code&gt;document.getElementById()&lt;/code&gt;&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;document.querySelector('some-selector');&lt;/code&gt; &lt;em&gt;//heads up this is not same as &lt;code&gt;document.getElementById()&lt;/code&gt;&lt;/em&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Or, you could just use the alias of &lt;code&gt;document.querySelector(&#39;some-selector&#39;)&lt;/code&gt; in devtools which is &lt;code&gt;$(&#39;some-selector&#39;)&lt;/code&gt;. That’s it.&lt;/p&gt;
+&lt;p&gt;Or, you could just use the alias of &lt;code&gt;document.querySelector('some-selector')&lt;/code&gt; in devtools which is &lt;code&gt;$('some-selector')&lt;/code&gt;. That’s it.&lt;/p&gt;
 
 &lt;h4 id=&quot;selector-1&quot;&gt;$$(selector)&lt;/h4&gt;
 &lt;p&gt;You try doing &lt;code&gt;$(selector)&lt;/code&gt; but all you’re getting is just one result. And then you realize that it’s just doing what &lt;code&gt;document.querySelector()&lt;/code&gt; was doing and sighed at yourself. Now you need something aliased to &lt;code&gt;document.querySelectorAll()&lt;/code&gt;. And as you can already figure out from the heading that you can achieve just that by using &lt;code&gt;$$(selector)&lt;/code&gt; and it will list out an array of all the elements with that selector.&lt;/p&gt;
@@ -338,16 +388,16 @@ So this:-&lt;br /&gt;
 Syntax:-
 &lt;code&gt;getEventListeners(DOM object,[events]);&lt;/code&gt;  &lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;getEventListeners(document.querySelector(&#39;testme&#39;), &quot;click&quot;);&lt;/code&gt;&lt;br /&gt;
-What the above statement does is, it lists out the click event for the &lt;code&gt;testme&lt;/code&gt; element. Of course, you could use &lt;code&gt;$(&#39;testme&#39;)&lt;/code&gt; or &lt;code&gt;$0&lt;/code&gt; to get that element but I’ll leave it up to you to be creative with what you can do.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;getEventListeners(document.querySelector('testme'), &quot;click&quot;);&lt;/code&gt;&lt;br /&gt;
+What the above statement does is, it lists out the click event for the &lt;code&gt;testme&lt;/code&gt; element. Of course, you could use &lt;code&gt;$('testme')&lt;/code&gt; or &lt;code&gt;$0&lt;/code&gt; to get that element but I’ll leave it up to you to be creative with what you can do.&lt;/p&gt;
 
 &lt;p&gt;The above returns a click object for that element and the function that will be invoked in the &lt;code&gt;listener&lt;/code&gt; key.&lt;br /&gt;
 Remember, the event parameter is totally optional. If you don’t specify it then it will return all the event that’s attached to that element.&lt;br /&gt;
-Do note however, that if you’re adding listenter with &lt;code&gt;jquery&lt;/code&gt; then the &lt;code&gt;listener&lt;/code&gt; will display &lt;code&gt;jquery&#39;s&lt;/code&gt; wrapper function than yours. This deserves a post on it’s own so I’m not going to dwell more on it but if you want to list the listener that’s been done purely by &lt;code&gt;addEventListener&lt;/code&gt; then &lt;code&gt;getEventListeners&lt;/code&gt; should be more than enough. If you want to play more then here’s the &lt;a href=&quot;http://jsfiddle.net/shriek/QXC5B/&quot;&gt;fiddle&lt;/a&gt; for you. (Note that since jsfiddle uses iframe you might not be able to find the element)&lt;/p&gt;
+Do note however, that if you’re adding listenter with &lt;code&gt;jquery&lt;/code&gt; then the &lt;code&gt;listener&lt;/code&gt; will display &lt;code&gt;jquery's&lt;/code&gt; wrapper function than yours. This deserves a post on it’s own so I’m not going to dwell more on it but if you want to list the listener that’s been done purely by &lt;code&gt;addEventListener&lt;/code&gt; then &lt;code&gt;getEventListeners&lt;/code&gt; should be more than enough. If you want to play more then here’s the &lt;a href=&quot;http://jsfiddle.net/shriek/QXC5B/&quot;&gt;fiddle&lt;/a&gt; for you. (Note that since jsfiddle uses iframe you might not be able to find the element)&lt;/p&gt;
 
 &lt;h4 id=&quot;monitoreventsobjectevents&quot;&gt;monitorEvents(object,[events])&lt;/h4&gt;
 &lt;p&gt;So far you’ve learned how to get elements with aliased query selectors, list the functions that will get invoked on events. But once-a-while there will come a time when your event will get triggered when it’s not supposed to causing all kinds of weird behaviors. For that very instance you can use &lt;code&gt;monitorEvents()&lt;/code&gt; function. This does exactly what it says. It simply monitors the events and logs whenever the event gets triggered on the specified element. Looking back to our earlier example let’s now monitor events on that click now.
-&lt;code&gt;monitorEvents(document.querySelector(&#39;testme&#39;), &#39;click&#39;);&lt;/code&gt;
+&lt;code&gt;monitorEvents(document.querySelector('testme'), 'click');&lt;/code&gt;
 This will log out Mouse Event object. According to the Paul Irish which was posted on &lt;a href=&quot;http://www.briangrinstead.com/blog/chrome-developer-tools-monitorevents&quot;&gt;this&lt;/a&gt; post.&lt;/p&gt;
 
 &lt;blockquote&gt;
@@ -379,8 +429,8 @@ This will log out Mouse Event object. According to the Paul Irish which was post
 
 &lt;h4 id=&quot;unmonitoreventsobject-events&quot;&gt;unmonitorEvents(object, [events])&lt;/h4&gt;
 &lt;p&gt;And if you want to stop monitoring for events then you can just use this function to stop listening. Also, you can stop listening to any one specific event if you were listening to multiple events. An example:-
-&lt;code&gt;monitorEvents(document.querySelector(&#39;.testme&#39;), &#39;mouse&#39;)&lt;/code&gt;
-&lt;code&gt;unmonitorEvents(document.querySelector(&#39;.testme&#39;),&#39;mouseover&#39;)&lt;/code&gt;&lt;/p&gt;
+&lt;code&gt;monitorEvents(document.querySelector('.testme'), 'mouse')&lt;/code&gt;
+&lt;code&gt;unmonitorEvents(document.querySelector('.testme'),'mouseover')&lt;/code&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;copy&quot;&gt;copy&lt;/h3&gt;
 &lt;p&gt;Often times whenever I’m trying to debug &lt;code&gt;json&lt;/code&gt; objects I have to copy the response or just have to search if the key exists or not. Sure I could just do &lt;code&gt;key in jsonResponseObj&lt;/code&gt; or other techniques but this is about copying the values from console to your clipboard. Simple, just do :-
@@ -393,9 +443,9 @@ keys({‘hey’: ‘there’, ‘how’:’you’}); // [‘hey’, ‘how’]&l
 
 &lt;h3 id=&quot;valuesobj&quot;&gt;values(obj)&lt;/h3&gt;
 &lt;p&gt;Opposite to &lt;code&gt;keys&lt;/code&gt;, &lt;code&gt;values&lt;/code&gt; is used to list out all the values in an object.
-&lt;code&gt;values({&#39;hey&#39;: &#39;there&#39;, &#39;how&#39;:&#39;you&#39;})&lt;/code&gt; &lt;em&gt;//will result in [‘there’, ‘you’]&lt;/em&gt; 
+&lt;code&gt;values({'hey': 'there', 'how':'you'})&lt;/code&gt; &lt;em&gt;//will result in [‘there’, ‘you’]&lt;/em&gt; 
 You can simple do the following to check if certain value exists or not if you want something similar to &lt;code&gt;in&lt;/code&gt; for values.
-&lt;code&gt;values({&#39;hey&#39;: &#39;there&#39;, &#39;how&#39;:&#39;you&#39;}).indexOf(&#39;hey&#39;) &amp;gt; -1&lt;/code&gt; &lt;em&gt;//true&lt;/em&gt;&lt;/p&gt;
+&lt;code&gt;values({'hey': 'there', 'how':'you'}).indexOf('hey') &amp;gt; -1&lt;/code&gt; &lt;em&gt;//true&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;Besides mentioned above there are lot of things that console API is capable of doing simply because it is quite extensive and also because the docs are much more better at it. Also the API has slight variation on different browsers. Maybe in future I’ll point out some of the most useful functions but for now here are the docs.
 &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/console&quot;&gt;Firefox Console API&lt;/a&gt;
@@ -420,20 +470,20 @@ You can simple do the following to check if certain value exists or not if you w
 
 &lt;p&gt;You can send me a pull request at this &lt;a href=&quot;https://github.com/sinkingshriek/jekyll-content&quot;&gt;project&lt;/a&gt; under _posts directory with filename as &lt;code&gt;YYYY-MM-DD-name-of-your-blog-title.md&lt;/code&gt;. You’re expected to know &lt;em&gt;markdown&lt;/em&gt; markup language. If you have no clue what that is then &lt;a href=&quot;http://markdowntutorial.com&quot;&gt;here’s a good starter&lt;/a&gt;. I’m using &lt;a href=&quot;http://kramdown.gettalong.org/quickref.html&quot;&gt;kramdown&lt;/a&gt; parser for my markdown so you might want to check that out too. Now, let us share the knowledge because as you know, it’s the only way to grow them. &lt;/p&gt;
 
-&lt;!-- You&#39;ll find this post in your `_posts` directory - edit this post and re-build (or run with the `-w` switch) to see your changes!
+&lt;!-- You'll find this post in your `_posts` directory - edit this post and re-build (or run with the `-w` switch) to see your changes!
 To add new posts, simply add a file in the `_posts` directory that follows the convention: YYYY-MM-DD-name-of-post.ext.
 
 Jekyll also offers powerful support for code snippets:
  --&gt;
 &lt;!-- 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Tom&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &amp;#39;Hi, Tom&amp;#39; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-Check out the [Jekyll docs][jekyll] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll&#39;s GitHub repo][jekyll-gh].
+Check out the [Jekyll docs][jekyll] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll's GitHub repo][jekyll-gh].
 
 [jekyll-gh]: https://github.com/jekyll/jekyll
 [jekyll]:    http://jekyllrb.com
