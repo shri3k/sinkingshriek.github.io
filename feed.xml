@@ -7,6 +7,99 @@
     <atom:link href="http://sinkingshriek.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>barebone unit testing in angular with mocha</title>
+        <description>&lt;p&gt;&lt;em&gt;tl;dr:- wanted to do testing in angular, found tuts that showed dep with karma, writing without one&lt;/em&gt;&lt;br /&gt;
+I’ve been trying to get my hands dirty on angular and while the tutorial in the official angular site showed some testing code, it never showed how to set one up. So, like any person I started googling for a quick tutorial on setting up unit testing for angular but every tutorial that I found wanted me to install &lt;code&gt;karma&lt;/code&gt; first. I’ve played with &lt;code&gt;karma&lt;/code&gt; before and didn’t really see the point of needing &lt;code&gt;karma&lt;/code&gt; for quick unit testing. As &lt;a href=&quot;https://twitter.com/vojtajina&quot; title=&quot;Creator of Karma&quot;&gt;Vojta Jina&lt;/a&gt; himself says, &lt;code&gt;karma&lt;/code&gt; is a test-runner, that’s it. It’s not required for your unit tests at all. It’s just something nice to have to automate the process. Below are the following things that you do indeed need:-&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;mochajs&lt;/li&gt;
+  &lt;li&gt;chaijs&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;These are the only two dependencies that you will be needing in your test code. *Of course if you’re using &lt;code&gt;jasmine&lt;/code&gt; you don’t need &lt;code&gt;chaijs&lt;/code&gt; either. But since I like freedom and &lt;code&gt;chaijs&lt;/code&gt; allows me to use any assertion library I’m gonna go ahead and use that with &lt;code&gt;mochajs&lt;/code&gt; which is just a testing &lt;code&gt;wrapper&lt;/code&gt; without any &lt;code&gt;assertion&lt;/code&gt; (that’s why chai is for).&lt;/p&gt;
+
+&lt;p&gt;You can download &lt;code&gt;mocha&lt;/code&gt; and &lt;code&gt;chai&lt;/code&gt; with npm but for simplicity’s sake I’m gonna go ahead and just point those to cdn.  &lt;/p&gt;
+
+&lt;h2 id=&quot;setup&quot;&gt;Setup&lt;/h2&gt;
+&lt;p&gt;You would need:-&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;index.html
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#mocha&quot;&gt;mochajs&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#chai&quot;&gt;chaijs&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#angular&quot;&gt;angularjs&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#mocha&quot;&gt;div with &lt;code&gt;mocha&lt;/code&gt; id in it&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#testing-style-with-optional-assertions&quot;&gt;testing style setup&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#code-to-be-tested&quot;&gt;your_app_code.js&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#test-code&quot;&gt;your_test_code.js&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#running-the-tests&quot;&gt;run mocha&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The order for:-&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;angularjs&lt;/li&gt;
+  &lt;li&gt;mochajs&lt;/li&gt;
+  &lt;li&gt;chaijs&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;doesn’t really matter but &lt;code&gt;mocha setup&lt;/code&gt; has to come after &lt;code&gt;mochajs&lt;/code&gt;. The order for &lt;code&gt;your_app_code.js&lt;/code&gt;, &lt;code&gt;your_test_code.js&lt;/code&gt; and &lt;code&gt;run mocha&lt;/code&gt; &lt;strong&gt;absolutely matters&lt;/strong&gt;. Get that ordering wrong and you’ll spend almost 15 mins trying to debug what exactly is happening. &lt;/p&gt;
+
+&lt;p&gt;Okay, let’s get started with the code.&lt;/p&gt;
+
+&lt;h2 id=&quot;code&quot;&gt;Code&lt;/h2&gt;
+
+&lt;h3 id=&quot;mocha&quot;&gt;mocha&lt;/h3&gt;
+&lt;p&gt;Since we’re doing this without &lt;code&gt;karma&lt;/code&gt; you would need a plain &lt;code&gt;html5&lt;/code&gt; file. We’re gonna go ahead and add &lt;code&gt;mochajs&lt;/code&gt; in the page with &lt;code&gt;mocha&lt;/code&gt; css and &lt;code&gt;div&lt;/code&gt; that &lt;code&gt;mocha&lt;/code&gt; requires which is in &lt;code&gt;line 10&lt;/code&gt;  &lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&quot;jsbin-embed&quot; href=&quot;http://jsbin.com/fiqoze/1/embed?html&quot;&gt;MySite&lt;/a&gt;&lt;script src=&quot;http://static.jsbin.com/js/embed.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;chai&quot;&gt;chai&lt;/h3&gt;
+&lt;p&gt;Now, let’s go ahead and add &lt;code&gt;chaijs&lt;/code&gt; too. &lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&quot;jsbin-embed&quot; href=&quot;http://jsbin.com/fiqoze/2/embed?html&quot;&gt;MySite&lt;/a&gt;&lt;script src=&quot;http://static.jsbin.com/js/embed.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;testing-style-with-optional-assertions&quot;&gt;testing style with optional assertions&lt;/h3&gt;
+&lt;p&gt;I like to setup my &lt;code&gt;mocha setup&lt;/code&gt; after I include &lt;code&gt;mocha&lt;/code&gt; and &lt;code&gt;chai&lt;/code&gt; because I’m adding &lt;code&gt;var assert = chai.assert&lt;/code&gt; which requires &lt;code&gt;chaijs&lt;/code&gt;. You could have added &lt;code&gt;var assert = chai.assert&lt;/code&gt; in your test code too but I like to add them in global. It makes sense to put them in global because istead of having them to write that over and over on each of our test files you just write once and if you do need some other assertion in your file you can also include them in your individual files.&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&quot;jsbin-embed&quot; href=&quot;http://jsbin.com/fiqoze/3/embed?html&quot;&gt;MySite&lt;/a&gt;&lt;script src=&quot;http://static.jsbin.com/js/embed.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;angular&quot;&gt;angular&lt;/h3&gt;
+&lt;p&gt;We now include &lt;code&gt;angular&lt;/code&gt; (You can change the version here. At the moment of writing this, this was the latest stable version).&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&quot;jsbin-embed&quot; href=&quot;http://jsbin.com/fiqoze/4/embed?html&quot;&gt;MySite&lt;/a&gt;&lt;script src=&quot;http://static.jsbin.com/js/embed.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;code-to-be-tested&quot;&gt;code to be tested&lt;/h3&gt;
+&lt;p&gt;Now, include the code that you want to test. This includes all your &lt;code&gt;controllers&lt;/code&gt;,&lt;code&gt;services&lt;/code&gt; everything. Here, let’s assume that I have them all in my &lt;code&gt;app.js&lt;/code&gt; file. &lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&quot;jsbin-embed&quot; href=&quot;http://jsbin.com/fiqoze/5/embed?html&quot;&gt;MySite&lt;/a&gt;&lt;script src=&quot;http://static.jsbin.com/js/embed.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;test-code&quot;&gt;test code&lt;/h3&gt;
+&lt;p&gt;We finally include our &lt;code&gt;spec&lt;/code&gt; file or &lt;code&gt;test&lt;/code&gt; file on our page (Usually, I put them under test folder which is like the standard convention now but you can put wherever you want depending on your preference).&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&quot;jsbin-embed&quot; href=&quot;http://jsbin.com/fiqoze/6/embed?html&quot;&gt;MySite&lt;/a&gt;&lt;script src=&quot;http://static.jsbin.com/js/embed.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;running-the-tests&quot;&gt;running the tests&lt;/h3&gt;
+&lt;p&gt;We’re not done yet. We have to now tell &lt;code&gt;mocha&lt;/code&gt; to run our &lt;code&gt;tests&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&quot;jsbin-embed&quot; href=&quot;http://jsbin.com/fiqoze/7/embed?html&quot;&gt;MySite&lt;/a&gt;&lt;script src=&quot;http://static.jsbin.com/js/embed.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Open this in Firefox or Chrome(if Chrome’s giving you problem with some security issues then switch to Firefox or run it with some simple server). And see your tests passing..or failing. &lt;/p&gt;
+
+&lt;p&gt;If you use &lt;code&gt;Sublime Text&lt;/code&gt; then you can also use the following snippet I made.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/sinkingshriek/fa546d0e6d2fe06facb5.js&quot;&gt;&lt;/script&gt;
+
+</description>
+        <pubDate>Sun, 27 Jul 2014 20:34:19 -0500</pubDate>
+        <link>http://sinkingshriek.github.io/node/angular/chaijs/mocha/2014/07/27/barebones-unit-testing-in-angular-with-mocha/</link>
+        <guid isPermaLink="true">http://sinkingshriek.github.io/node/angular/chaijs/mocha/2014/07/27/barebones-unit-testing-in-angular-with-mocha/</guid>
+      </item>
+    
+      <item>
         <title>when it's apt to use global</title>
         <description>&lt;p&gt;Pretty much almost any programmer that you meet would say that sticking variables to &lt;code&gt;global&lt;/code&gt; object is a bad idea. JavaScript was pretty notorious for this one. Forget to put &lt;code&gt;var&lt;/code&gt; in your variable inside the &lt;code&gt;function&lt;/code&gt; and it goes straight to the &lt;code&gt;window&lt;/code&gt;(global) object if you forgot &lt;code&gt;'use strict';&lt;/code&gt; in your function or in global context. It’s still true for node but instead of &lt;code&gt;window&lt;/code&gt; object it gets added to &lt;code&gt;global&lt;/code&gt; object.&lt;br /&gt;
 &lt;code&gt;Global&lt;/code&gt; is well, global object in node, just like &lt;code&gt;window&lt;/code&gt; in browsers. You can put your variables in global object by either not declaring it with &lt;code&gt;var&lt;/code&gt; or using &lt;code&gt;global&lt;/code&gt; or &lt;code&gt;GLOBAL&lt;/code&gt;. &lt;em&gt;&lt;code&gt;GLOBAL&lt;/code&gt; is just an alias for global.&lt;/em&gt; &lt;/p&gt;
