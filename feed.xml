@@ -7,6 +7,69 @@
     <atom:link href="http://sinkingshriek.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>revisiting new</title>
+        <description>&lt;p&gt;It’s almost embarrassing at times when I go complete blank on how &lt;code&gt;new&lt;/code&gt; actually works. We don’t think much when creating instances in JavaScript. It just works. And that’s also probably why it’s so easy to forget what’s happening under the hood of this three lettered word.&lt;/p&gt;
+
+&lt;p&gt;Basically, there are three things that’s happening under this three lettered word.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#__proto__-being-referenced&quot;&gt;&lt;code&gt;__proto__&lt;/code&gt; being referenced&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#constructor-being-referenced&quot;&gt;&lt;code&gt;constructor&lt;/code&gt; being referenced&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#Constructor-being-called-with&quot;&gt;Constructor being called with..&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;proto-being-referenced-&quot;&gt;&lt;code&gt;__proto__&lt;/code&gt; being referenced:-&lt;/h3&gt;
+&lt;p&gt;Whenever we create an instance we’re always trying to create an instance from some constructor (&lt;em&gt;Constructor is just some normal JavaScript function&lt;/em&gt;). The first thing that can happen whenever we’re creating an instance is that the &lt;code&gt;__proto__&lt;/code&gt; of an instance being referenced to the prototype of the Constructor (&lt;em&gt;Remember, &lt;code&gt;__proto__&lt;/code&gt;, which is also called prototype, is different from Constructor’s prototype. &lt;code&gt;__proto__&lt;/code&gt; is a hidden property of pretty much every object in JavaScript&lt;/em&gt;). Let’s see this in action.  &lt;/p&gt;
+
+&lt;p&gt;Let’s mimic the behavior of &lt;code&gt;new&lt;/code&gt; without using &lt;code&gt;new&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SomeConstructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;hi&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;someInstance&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Here, we just start off with a Constructor and an empty object literal.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SomeConstructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;hi&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;someInstance&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;someInstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;__proto__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SomeConstructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And then, &lt;code&gt;__proto__&lt;/code&gt; is referenced to prototype of Constructor.&lt;/p&gt;
+
+&lt;h3 id=&quot;constructor-being-referenced-&quot;&gt;constructor being referenced:-&lt;/h3&gt;
+&lt;p&gt;Now that the &lt;code&gt;__proto__&lt;/code&gt; is being referenced to the Constructor’s prototype, we now have to reference the instance’s constructor to the Constructor (&lt;em&gt;function&lt;/em&gt;). (&lt;em&gt;Every instance has a constructor property referencing to it’s Constructor&lt;/em&gt;)&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SomeConstructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;hi&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;someInstance&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;someInstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;__proto__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SomeConstructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;someInstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;constructor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SomeConstructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;constructor-being-called-with-&quot;&gt;Constructor being called with:-&lt;/h3&gt;
+&lt;p&gt;This IMO, is the crucial part among all three steps. This is where all the instance variables and methods gets assigned to the new instance. &lt;code&gt;new&lt;/code&gt; finally calls the Constructor function with reference to our instance. &lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SomeConstructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;hi&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;someInstance&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;someInstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;__proto__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SomeConstructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;someInstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;constructor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SomeConstructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;SomeConstructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;someInstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//SomeConstructor.apply(someInstance) is valid too&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And that’s how new works. This is an important step to learn how Inheritance works in JavaScript.&lt;/p&gt;
+
+&lt;p&gt;Do note that &lt;code&gt;this&lt;/code&gt; inside the Constructor function is what’s telling the variables to be instance variables and functions to be methods, meaning the new instance will have a copy of these variables and functions to itself. We can also assign our functions and properties to the prototype of Constructor to make it share among instances but that’s a whole different topic for another post.&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 05 Sep 2014 20:34:19 -0500</pubDate>
+        <link>http://sinkingshriek.github.io/javascript/intro/2014/09/05/revisiting-new/</link>
+        <guid isPermaLink="true">http://sinkingshriek.github.io/javascript/intro/2014/09/05/revisiting-new/</guid>
+      </item>
+    
+      <item>
         <title>barebone unit testing in angular with mocha</title>
         <description>&lt;p&gt;&lt;em&gt;tl;dr:- wanted to do testing in angular, found tuts that showed dep with karma, writing without one&lt;/em&gt;&lt;br /&gt;
 I’ve been trying to get my hands dirty on angular and while the tutorial in the official angular site showed some testing code, it never showed how to set one up. So, like any person I started googling for a quick tutorial on setting up unit testing for angular but every tutorial that I found wanted me to install &lt;code&gt;karma&lt;/code&gt; first. I’ve played with &lt;code&gt;karma&lt;/code&gt; before and didn’t really see the point of needing &lt;code&gt;karma&lt;/code&gt; for quick unit testing. As &lt;a href=&quot;https://twitter.com/vojtajina&quot; title=&quot;Creator of Karma&quot;&gt;Vojta Jina&lt;/a&gt; himself says, &lt;code&gt;karma&lt;/code&gt; is a test-runner, that’s it. It’s not required for your unit tests at all. It’s just something nice to have to automate the process. Below are the following things that you do indeed need:-&lt;/p&gt;
