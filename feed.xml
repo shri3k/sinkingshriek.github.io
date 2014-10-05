@@ -7,6 +7,19 @@
     <atom:link href="http://sinkingshriek.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>transitioning to vim</title>
+        <description>&lt;p&gt;A rather late post but I’ve been trying to move my workflow from Sublime Text to Vim. I don’t have any complains about Sublime Text. In fact, it’s the first text editor that I fell in love with. I still use Sublime Text in Windows (I use both Windows and Linux, shock !, I know) but I found it more natural to use Vim in Linux. Also, one of the compellling reason for me to move to Vim was because of the plugin called ‘Vundle’.&lt;br /&gt;
+Vundle is a plugin manager. All you have to do is update your &lt;code&gt;.vimrc&lt;/code&gt; and then Vundle takes care of installing, cleaning, managing(a little bit) plugins for you. I’m not going to talk about installing, managing and all the feature of vundle here. I’ll just leave my &lt;code&gt;.vimrc&lt;/code&gt;. You are more than welcome to fork it and use it to your liking.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/sinkingshriek/e33c4b67446cf7bc1eaa.js&quot;&gt;&lt;/script&gt;
+
+</description>
+        <pubDate>Sat, 04 Oct 2014 20:34:19 -0500</pubDate>
+        <link>http://sinkingshriek.github.io/vim/vundle/vimrc/2014/10/04/transitioning-to-vim/</link>
+        <guid isPermaLink="true">http://sinkingshriek.github.io/vim/vundle/vimrc/2014/10/04/transitioning-to-vim/</guid>
+      </item>
+    
+      <item>
         <title>revisiting new</title>
         <description>&lt;p&gt;It’s almost embarrassing at times when I go complete blank on how &lt;code&gt;new&lt;/code&gt; actually works. We don’t think much when creating instances in JavaScript. It just works. And that’s also probably why it’s so easy to forget what’s happening under the hood of this three lettered word.&lt;/p&gt;
 
