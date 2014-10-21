@@ -7,6 +7,63 @@
     <atom:link href="http://sinkingshriek.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>event loop and related</title>
+        <description>&lt;p&gt;So, recently I watched the talk from &lt;a href=&quot;https://www.youtube.com/watch?v=8aGhZQkoFbQ&quot;&gt;Philip Roberts&lt;/a&gt;. If you have time then I highly recommed that you watch that talk instead of reading this because I am just going to summarize from that talk. You can think of this as TL;DW version of that talk.&lt;/p&gt;
+
+&lt;p&gt;Okay, let’s just dive in and see how JavaScript actually works and how this event loop and others play part (I’m going to assume that you already know that JS is single threaded and concurrent language). &lt;/p&gt;
+
+&lt;p&gt;Probably the most crucial part for me that clicked to understand how JavaScript really works the way it does was that Web Browsers or NodeJS consists of many components. Those components are V8, SpiderMonkey, Chakra, Crackan or any other JavaScript engine, APIs (this is your DOM, ajax, filesystem and other APIs that Web Browsers or NodeJS provide you, you can find more &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API&quot;&gt;Web API here&lt;/a&gt; and &lt;a href=&quot;http://nodejs.org/api/&quot;&gt;Node API here&lt;/a&gt;), a callback queue and finally an event loop. There might be more but these are pretty much the basics. &lt;/p&gt;
+
+&lt;p&gt;For simplicity’s sake I’ll just talk about browsers but it applies to server-side part of JavaScript too.&lt;br /&gt;
+Okay, so browsers consists of :-&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;JS Engine&lt;/li&gt;
+  &lt;li&gt;Web APIs&lt;/li&gt;
+  &lt;li&gt;Callback Queue&lt;/li&gt;
+  &lt;li&gt;Event Loop&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;JS Engines like V8 and SpiderMonkey in turn consists of :-&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Heap&lt;/li&gt;
+  &lt;li&gt;Stack &lt;em&gt;(This is the same stack from the callstack that you see in the browser)&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I’ll explain this by running the following code. You can run it in your browser and see the output too.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/sinkingshriek/c1d08d566ee535d8f8b2.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;Let’s examine the code.&lt;br /&gt;
+We start off with some variable declaration and print &lt;code&gt;First&lt;/code&gt;. Currently you’re on some level of stack. Stacks are what’s being currently run or processed by the JS Engine.  &lt;/p&gt;
+
+&lt;p&gt;And we have the &lt;code&gt;increase&lt;/code&gt; function which is recursive. It takes upto 10000 stack memory. The code doesn’t have to be a recursive function, any JavaScript code executes on some stack. Only what’s at the top of the stack tells us what’s currently running. You can put a debugger inside &lt;code&gt;increase&lt;/code&gt; function to see the stack increase as it calls itself over and over. The JS being a single threaded doesn’t run anything else apart from this code until it finishes. What does this tell us? This tells us that this part is still sync or blocking code.    &lt;/p&gt;
+
+&lt;p&gt;So the &lt;code&gt;Third&lt;/code&gt; doesn’t get printed until the &lt;code&gt;increase&lt;/code&gt; loop completes. For shits and giggles, you can try to exceed the &lt;code&gt;10000&lt;/code&gt; to some ridiculous number. I believe 160000 is the maximum that Chrome allows at the moment. And if it exceeds none of the following code gets executed.  &lt;/p&gt;
+
+&lt;p&gt;Anyway as soon as it reaches to &lt;code&gt;setTimeout&lt;/code&gt; function however, it pushes that callback function to Web API and let’s it handle what the code is doing there. Mind you that this hasn’t yet been pushed to stack. It waits for 5 secs until it can execute.&lt;br /&gt;
+So, &lt;code&gt;Third&lt;/code&gt; gets printed out and we have another &lt;code&gt;setTimeout&lt;/code&gt;, well, this gets pushed to Web API as well but since it’s 0 sec you might think that it should get exectued immediately. Nope. After Web API is done with the code, it gets thrown in &lt;code&gt;Callback Queue&lt;/code&gt; and it waits its turn for &lt;code&gt;event loop&lt;/code&gt; to put it on the stack. The &lt;code&gt;event loop&lt;/code&gt; doesn’t put the &lt;code&gt;callback&lt;/code&gt; on the stack until the stack has been cleared.   &lt;/p&gt;
+
+&lt;p&gt;So it proceeds to print &lt;code&gt;Fifth&lt;/code&gt; and finally the stack is free and &lt;code&gt;event loop&lt;/code&gt; says “okay, you’re allowed to pass to the &lt;code&gt;call stack&lt;/code&gt; now”. And then it prints &lt;code&gt;Fourth&lt;/code&gt;.  &lt;/p&gt;
+
+&lt;p&gt;Meanwhile the &lt;code&gt;setTimeout&lt;/code&gt; with 5 sec delay, after 5 sec, gets pushed into the &lt;code&gt;callback queue&lt;/code&gt; and then &lt;code&gt;event loop&lt;/code&gt; pushes it to stack and &lt;code&gt;Second&lt;/code&gt; is the last one to get printed.  &lt;/p&gt;
+
+&lt;h3 id=&quot;a-lot-to-process&quot;&gt;A lot to process?&lt;/h3&gt;
+&lt;p&gt;Think of JavaScript as your Post man and think of all the events as all the letters that Post Man has to deliver. Well, your Post Man doesn’t really read all your letters. He just needs to now where to put it like Web API or database query which is handled by other processes. The letters could be something that you need to read…and if it’s a bill and you need to mail back the check then you need to write down the check and then mail them from the Post Office. All this work is taken care by you (let’s call you a Web API or ajax or any database query) and Post Man, aka js, just goes and does his business.&lt;/p&gt;
+
+&lt;p&gt;Back to our Post Office. Let’s say your post box delivers mails as soon as it’s being handed to them. And you hand him the mail that has check that you just made out to your electricity provider. This futuristic post office is like &lt;code&gt;callback queue&lt;/code&gt; in browsers. And then it gets deilvered which one came to the Post Office first. And the process continues.&lt;/p&gt;
+
+&lt;p&gt;Now let’s say the postman is stuck in the traffic. This can be thought of as blocking code in js. &lt;code&gt;increase&lt;/code&gt; is such type of code which is why many people often discourage writing memory intensive code in JavaScript but really, what they’re saying is not to write blocking codes if you can avoid it. &lt;/p&gt;
+
+&lt;p&gt;There are very good reasons to write sync/blocking code and there are times when it’s just not needed. But anyway, this requires a blog post of it’s own. I hope this somewhat clarifies how JavaScript works the way it does. &lt;/p&gt;
+</description>
+        <pubDate>Sun, 19 Oct 2014 21:34:19 -0500</pubDate>
+        <link>http://sinkingshriek.github.io/javascript/browser/v8/node/2014/10/19/event-loop/</link>
+        <guid isPermaLink="true">http://sinkingshriek.github.io/javascript/browser/v8/node/2014/10/19/event-loop/</guid>
+      </item>
+    
+      <item>
         <title>transitioning to vim</title>
         <description>&lt;p&gt;A rather late post but I’ve been trying to move my workflow from Sublime Text to Vim. I don’t have any complains about Sublime Text. In fact, it’s the first text editor that I fell in love with. I still use Sublime Text in Windows (I use both Windows and Linux, shock !, I know) but I found it more natural to use Vim in Linux. Also, one of the compellling reason for me to move to Vim was because of the plugin called ‘Vundle’.&lt;br /&gt;
 Vundle is a plugin manager. All you have to do is update your &lt;code&gt;.vimrc&lt;/code&gt; and then Vundle takes care of installing, cleaning, managing(a little bit) plugins for you. I’m not going to talk about installing, managing and all the feature of vundle here. I’ll just leave my &lt;code&gt;.vimrc&lt;/code&gt;. You are more than welcome to fork it and use it to your liking.&lt;/p&gt;
@@ -625,42 +682,6 @@ You can simple do the following to check if certain value exists or not if you w
         <pubDate>Fri, 23 May 2014 20:34:19 -0500</pubDate>
         <link>http://sinkingshriek.github.io/casual/devtools/2014/05/23/imagine-trying-to-build-a-skyscrapper-with-just-a-hammer/</link>
         <guid isPermaLink="true">http://sinkingshriek.github.io/casual/devtools/2014/05/23/imagine-trying-to-build-a-skyscrapper-with-just-a-hammer/</guid>
-      </item>
-    
-      <item>
-        <title>Start of yet another another blog</title>
-        <description>&lt;p&gt;For the longest time I’ve thought I should write down what goes in my head. Or at-least, document what I’m experimenting, reading or even one of those crazy shower ideas. It’s not that I didn’t try. Oh, I tried alright. I’ve tried &lt;em&gt;Blogger&lt;/em&gt;, &lt;em&gt;Wordpress&lt;/em&gt; and more &lt;em&gt;Wordpress&lt;/em&gt; but the thought of logging in (even though my browser logs them for me) and writing in their editor sounded too much of a work. If you’ve not figured out already, then yes, I am one lazy guy but I’ve got a good excuse to say that. I’m a programmer and it just didn’t feel right.&lt;/p&gt;
-
-&lt;p&gt;And then I heard about &lt;em&gt;pages&lt;/em&gt; from &lt;em&gt;github&lt;/em&gt;. It sounded cool until I realize that it was just for static pages, of course you could commit your blog posts and it would appear as if it was a brand new posts but this too sounded too much of a work. Of course doing this is more work than signing up for a &lt;em&gt;Wordpress&lt;/em&gt; account but I still wanted to some control over and, well, &lt;em&gt;github&lt;/em&gt; did give me enough freedom to do so but it was a little overwhelming to be honest.&lt;/p&gt;
-
-&lt;p&gt;But the one thing that I’ve been overlooking all this time while browsing through the &lt;a href=&quot;http://pages.github.com&quot;&gt;pages.github.com&lt;/a&gt; was that it was using a &lt;a href=&quot;http://www.jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt; engine, which has actually been for quite sometime (&lt;em&gt;spare me, I’ve been struggling with my life all these years and just getting in this field&lt;/em&gt;). This was just what I needed, not bare-bones, not too high-level. The middle-ground. Umm, yes. I could almost smell the victory with this, or is that my laptop fan. &lt;/p&gt;
-
-&lt;p&gt;Anyway, what I’ve decided doing is to use both &lt;em&gt;pages.github.com&lt;/em&gt; and &lt;em&gt;jekyll&lt;/em&gt; to run my blog. I’ve thought about using &lt;a href=&quot;http://www.heroku.com&quot;&gt;heroku&lt;/a&gt; as my host too but I don’t see the reason to use &lt;em&gt;heroku&lt;/em&gt; when I already have &lt;em&gt;pages&lt;/em&gt;. And I recommend you do the same if you want to start your own blog and are in the similar situation as I am. Seriously, there is no excuse these days not too. There are too many tools that’s just ready for you to use. And if really really don’t want to start your own blog then I’ve made this blog open source, user can send me pull request on the topic if they want to be published. Now, if that’s not spoon feeding then I don’t know what is. &lt;/p&gt;
-
-&lt;p&gt;You can send me a pull request at this &lt;a href=&quot;https://github.com/sinkingshriek/jekyll-content&quot;&gt;project&lt;/a&gt; under _posts directory with filename as &lt;code&gt;YYYY-MM-DD-name-of-your-blog-title.md&lt;/code&gt;. You’re expected to know &lt;em&gt;markdown&lt;/em&gt; markup language. If you have no clue what that is then &lt;a href=&quot;http://markdowntutorial.com&quot;&gt;here’s a good starter&lt;/a&gt;. I’m using &lt;a href=&quot;http://kramdown.gettalong.org/quickref.html&quot;&gt;kramdown&lt;/a&gt; parser for my markdown so you might want to check that out too. Now, let us share the knowledge because as you know, it’s the only way to grow them. &lt;/p&gt;
-
-&lt;!-- You'll find this post in your `_posts` directory - edit this post and re-build (or run with the `-w` switch) to see your changes!
-To add new posts, simply add a file in the `_posts` directory that follows the convention: YYYY-MM-DD-name-of-post.ext.
-
-Jekyll also offers powerful support for code snippets:
- --&gt;
-&lt;!-- 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Tom&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &amp;#39;Hi, Tom&amp;#39; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-Check out the [Jekyll docs][jekyll] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll's GitHub repo][jekyll-gh].
-
-[jekyll-gh]: https://github.com/jekyll/jekyll
-[jekyll]:    http://jekyllrb.com
- --&gt;
-</description>
-        <pubDate>Sat, 10 May 2014 20:34:19 -0500</pubDate>
-        <link>http://sinkingshriek.github.io/casual/2014/05/10/start-of-something-normal/</link>
-        <guid isPermaLink="true">http://sinkingshriek.github.io/casual/2014/05/10/start-of-something-normal/</guid>
       </item>
     
   </channel>
