@@ -61,7 +61,9 @@
   </header>
 
   <article class="post-content">
-  <p>I’ll take a break from the devtools post and post a quick info that I’ve been reading up this week.<br />
+  <p><em>Edit:- This post has been modified as of 2014-12-06 to correct and clarify few issues in this post</em></p>
+
+<p>I’ll take a break from the devtools post and post a quick info that I’ve been reading up this week.<br />
 Before jumping to the topic let’s first look at what module really is.</p>
 
 <p>In general, a module is nothing but a separated functionality (piece) of a program that gives structure to your code while adhering to two key features, <strong>low</strong> <code>coupling</code> and <strong>high</strong> <code>cohesion</code>, meaning that the piece of code that you write has very less or no dependency (<strong>low coupling</strong>) and can be pluggable to almost any part of your other program (<strong>high cohesion</strong>). Basically, these two terms go hand in hand and are co-related.</p>
@@ -70,7 +72,10 @@ Before jumping to the topic let’s first look at what module really is.</p>
 
 <p>`var myModule = require(‘./myModule’);’</p>
 
-<p>This is what the meat of this post is going to be. What exactly is happening when you do <code>require</code>? Before I go any further notice that <code>./</code> before the module name in that require? Whenever you supply <code>./</code> to <code>require</code> then node will search for the module in the current working directory or also called <code>relative path</code>. So if you had your file structure as follows:-</p>
+<p>This is what the meat of this post is going to be. What exactly is happening when you do <code>require</code>? </p>
+
+<h2 id="requiring-as-file">Requiring as file</h2>
+<p>Before I go any further notice that <code>./</code> before the module name in that require? Whenever you supply <code>./</code> to <code>require</code> then node will search for the module in the current working directory or also called <code>relative path</code>. So if you had your file structure as follows:-</p>
 
 <pre><code>--myRootDirectory
 ----index.js //let's say this is where your require('./myModule') is
@@ -79,59 +84,27 @@ Before jumping to the topic let’s first look at what module really is.</p>
 
 <p>Then doing <code>./</code> will immediately search inside the current directory. If you would feel like putting your modules in a directory then that’s perfectly fine too. Just add <code>./directory_name/myAnotherModule</code>.</p>
 
-<p>On a similar note, you can also do:-</p>
+<h2 id="requiring-core-modules">Requiring core modules</h2>
+<p>Node comes with some core modules. If you simply <code>require('fs')</code> (fs is file system core module), then node knows that it’s a core module and simply requires that.</p>
 
-<p><code>var myModule = require('/myModule');</code> //note the absence of <code>.</code></p>
+<h2 id="requiring-previously-installed-modules">Requiring previously installed modules</h2>
+<p>There are thousands of packages in <code>npm</code> that you can require. If you install some package in your project then you’ll notice a directory show up called <code>node_modules</code>. To require these modules you would simple require the module name like:-  </p>
 
-<p>for <code>absolute path</code>. This looks at the root of your app instead of the current directory. So if you had:-</p>
-
-<pre><code>--myRootDirectory
-----myAnotherDirectory
-------myModule.js //let's say this is where your require('/myAnotherModule') is
-----index.js 
-----myAnotherModule.js
+<pre><code>var _ = require('lodash');
 </code></pre>
 
-<p>Also, do note that since node already expects a JavaScript file you don’t have to put the <code>.js</code> extension at th end.</p>
+<p>When you do this, require will try to look for <code>node_modules</code> directory in current directory. If it does find it and the required package is installed in this directory then it simply loads from there but if it doesn’t, then it goes to the parent directory and looks for <code>node_modules</code> there and so on and so forth until it reaches the root of the path. This is why you have to be careful where you install your package. Sometimes it can get confusing if you simply require a package and even though it’s not in your current <code>node_modules</code> it simply works and in future that gets deleted and you have no idea why your app suddenly stopped working.</p>
 
-<p>So that was with the <code>./</code> and ‘/’ at the prefix of your module but there’s another mechanism node follows to look for your modules. If you don’t supply the <code>./</code> at the prefix then the following steps is followed by node to search for your module.</p>
+<h2 id="requiring-as-directory">Requiring as directory</h2>
+<p>As similar to requiring as file, you can also require as a directory by simply doing:-  </p>
 
-<ul>
-  <li>Checks if it’s a core module.</li>
-  <li>Checks the module in <code>node_modules</code> directory in the current directory and moves up one directory until the root of your app.</li>
-  <li>Lastly checks in the path of <code>NODE_MODULE</code> that’s specified in your system’s <code>environment variable</code>.</li>
-  <li>At the end throws exception if nothing is found.</li>
-</ul>
-
-<p>The core module that node checks in the beginning are the core modules that node provides like <code>http</code>, <code>fs</code> which will take precedence over any other steps.<br />
-If it’s not a core module then it starts looking for <code>node_modules</code> until it reaches the root of your application. Something like this:-</p>
-
-<pre><code>--myRootDirectory
---node_modules
-----myModule.js
---lib
-----myAnotherModule.js //you can require('myModule') here.
---index.js // and here require('myModule') will reside.
+<pre><code>var _ = require('./');
 </code></pre>
 
-<p>See how <code>lib</code> directory doesn’t have <code>node_modules</code> and it goes up one level in <code>myRootDirectory</code> where it does have <code>node_modules</code> directory which indeed has <code>myModule</code>.<br />
-Also, in the index.js, which is inside <code>myRootDirectory</code> has <code>node_modules</code> directory so it just immediately knows where <code>myModule</code> is.<br />
-NOTE:- node doesn’t traverse down so if you had something like this:-</p>
+<p>If you do so, then node will try to look for <code>package.json</code> manifest file in the current directory and looks for <code>main</code> property. <code>main</code> property is the property in the <code>package.json</code> file where we specify our entry file. So let’s say if you had an app then you could just do <code>npm start</code> and then it reads the <code>package.json</code>file for <code>main</code> property and executes that script. But let’s move as this is a good topic for next post.<br />
+If however you don’t have <code>package.json</code> file in the directory that’s specified in the require then it just automatically assumes that you have <code>index.js</code> on that directory. <strong>Again, same thing for npm start too</strong></p>
 
-<pre><code>--myRootDirectory
---node_modules
-----myModule.js
---lib
-----node_modules
-------myInsideModule.js
-----myAnotherModule.js //you can require('myInsideModule') here.
---index.js // but not here. THIS WILL NOT WORK require('myInsideModule')
-</code></pre>
-
-<p>However, if your module is inside your system path (<code>ENVIRONMENT VARIABLE</code>) then your module should load just fine. For Windows users it’s usually in 
-<code>c:\Program Files\Node\lib</code> and for Linux users just <code>echo PATH</code> and google on how to add path in your <code>environment variable</code>. </p>
-
-<p>You can play with the <a href="https://github.com/sinkingshriek/load_node_module">sample node_modules</a> that I’ve made ready for you play. Check out the commits too on what mistakes I made to learn from it.  </p>
+<p>Also, do note that you don’t have to specify <code>.js</code> or <code>.node</code>. Node looks for <code>.js</code> or <code>.node</code> automatically.</p>
 
 
   </article>

@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>thisisyojan</title>
-    <description>In a way, we're all spiders weaving the web.</description>
+    <description>In a way, we&#39;re all spiders weaving the web.</description>
     <link>http://sinkingshriek.github.io/</link>
     <atom:link href="http://sinkingshriek.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
@@ -66,7 +66,7 @@ var loopArray = function(arr){
 	arr.forEach(Array.prototype.slice.call(arguments, 1)[0]);
 };
 
-//Now let's make a partial function
+//Now let&#39;s make a partial function
 var partialized = partial(loopArray, [1,2,3,4]);
 //We can now use partialized function to accept any callbacks
 //on the prefilled iteration
@@ -334,8 +334,8 @@ I’ve been trying to get my hands dirty on angular and while the tutorial in th
       </item>
     
       <item>
-        <title>when it's apt to use global</title>
-        <description>&lt;p&gt;Pretty much almost any programmer that you meet would say that sticking variables to &lt;code&gt;global&lt;/code&gt; object is a bad idea. JavaScript was pretty notorious for this one. Forget to put &lt;code&gt;var&lt;/code&gt; in your variable inside the &lt;code&gt;function&lt;/code&gt; and it goes straight to the &lt;code&gt;window&lt;/code&gt;(global) object if you forgot &lt;code&gt;'use strict';&lt;/code&gt; in your function or in global context. It’s still true for node but instead of &lt;code&gt;window&lt;/code&gt; object it gets added to &lt;code&gt;global&lt;/code&gt; object.&lt;br /&gt;
+        <title>when it&#39;s apt to use global</title>
+        <description>&lt;p&gt;Pretty much almost any programmer that you meet would say that sticking variables to &lt;code&gt;global&lt;/code&gt; object is a bad idea. JavaScript was pretty notorious for this one. Forget to put &lt;code&gt;var&lt;/code&gt; in your variable inside the &lt;code&gt;function&lt;/code&gt; and it goes straight to the &lt;code&gt;window&lt;/code&gt;(global) object if you forgot &lt;code&gt;&#39;use strict&#39;;&lt;/code&gt; in your function or in global context. It’s still true for node but instead of &lt;code&gt;window&lt;/code&gt; object it gets added to &lt;code&gt;global&lt;/code&gt; object.&lt;br /&gt;
 &lt;code&gt;Global&lt;/code&gt; is well, global object in node, just like &lt;code&gt;window&lt;/code&gt; in browsers. You can put your variables in global object by either not declaring it with &lt;code&gt;var&lt;/code&gt; or using &lt;code&gt;global&lt;/code&gt; or &lt;code&gt;GLOBAL&lt;/code&gt;. &lt;em&gt;&lt;code&gt;GLOBAL&lt;/code&gt; is just an alias for global.&lt;/em&gt; &lt;/p&gt;
 
 &lt;p&gt;So, let’s just demonstrate the above with some code. Create two files with the following content and then run &lt;code&gt;node index&lt;/code&gt;;&lt;/p&gt;
@@ -509,7 +509,9 @@ any version whatsoever (usually the recent one)  &lt;/p&gt;
     
       <item>
         <title>How node modules actually load.</title>
-        <description>&lt;p&gt;I’ll take a break from the devtools post and post a quick info that I’ve been reading up this week.&lt;br /&gt;
+        <description>&lt;p&gt;&lt;em&gt;Edit:- This post has been modified as of 2014-12-06 to correct and clarify few issues in this post&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;I’ll take a break from the devtools post and post a quick info that I’ve been reading up this week.&lt;br /&gt;
 Before jumping to the topic let’s first look at what module really is.&lt;/p&gt;
 
 &lt;p&gt;In general, a module is nothing but a separated functionality (piece) of a program that gives structure to your code while adhering to two key features, &lt;strong&gt;low&lt;/strong&gt; &lt;code&gt;coupling&lt;/code&gt; and &lt;strong&gt;high&lt;/strong&gt; &lt;code&gt;cohesion&lt;/code&gt;, meaning that the piece of code that you write has very less or no dependency (&lt;strong&gt;low coupling&lt;/strong&gt;) and can be pluggable to almost any part of your other program (&lt;strong&gt;high cohesion&lt;/strong&gt;). Basically, these two terms go hand in hand and are co-related.&lt;/p&gt;
@@ -518,68 +520,39 @@ Before jumping to the topic let’s first look at what module really is.&lt;/p&g
 
 &lt;p&gt;`var myModule = require(‘./myModule’);’&lt;/p&gt;
 
-&lt;p&gt;This is what the meat of this post is going to be. What exactly is happening when you do &lt;code&gt;require&lt;/code&gt;? Before I go any further notice that &lt;code&gt;./&lt;/code&gt; before the module name in that require? Whenever you supply &lt;code&gt;./&lt;/code&gt; to &lt;code&gt;require&lt;/code&gt; then node will search for the module in the current working directory or also called &lt;code&gt;relative path&lt;/code&gt;. So if you had your file structure as follows:-&lt;/p&gt;
+&lt;p&gt;This is what the meat of this post is going to be. What exactly is happening when you do &lt;code&gt;require&lt;/code&gt;? &lt;/p&gt;
+
+&lt;h2 id=&quot;requiring-as-file&quot;&gt;Requiring as file&lt;/h2&gt;
+&lt;p&gt;Before I go any further notice that &lt;code&gt;./&lt;/code&gt; before the module name in that require? Whenever you supply &lt;code&gt;./&lt;/code&gt; to &lt;code&gt;require&lt;/code&gt; then node will search for the module in the current working directory or also called &lt;code&gt;relative path&lt;/code&gt;. So if you had your file structure as follows:-&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;--myRootDirectory
-----index.js //let's say this is where your require('./myModule') is
+----index.js //let&#39;s say this is where your require(&#39;./myModule&#39;) is
 ----myModule.js
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Then doing &lt;code&gt;./&lt;/code&gt; will immediately search inside the current directory. If you would feel like putting your modules in a directory then that’s perfectly fine too. Just add &lt;code&gt;./directory_name/myAnotherModule&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;On a similar note, you can also do:-&lt;/p&gt;
+&lt;h2 id=&quot;requiring-core-modules&quot;&gt;Requiring core modules&lt;/h2&gt;
+&lt;p&gt;Node comes with some core modules. If you simply &lt;code&gt;require(&#39;fs&#39;)&lt;/code&gt; (fs is file system core module), then node knows that it’s a core module and simply requires that.&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;var myModule = require('/myModule');&lt;/code&gt; //note the absence of &lt;code&gt;.&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&quot;requiring-previously-installed-modules&quot;&gt;Requiring previously installed modules&lt;/h2&gt;
+&lt;p&gt;There are thousands of packages in &lt;code&gt;npm&lt;/code&gt; that you can require. If you install some package in your project then you’ll notice a directory show up called &lt;code&gt;node_modules&lt;/code&gt;. To require these modules you would simple require the module name like:-  &lt;/p&gt;
 
-&lt;p&gt;for &lt;code&gt;absolute path&lt;/code&gt;. This looks at the root of your app instead of the current directory. So if you had:-&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;--myRootDirectory
-----myAnotherDirectory
-------myModule.js //let's say this is where your require('/myAnotherModule') is
-----index.js 
-----myAnotherModule.js
+&lt;pre&gt;&lt;code&gt;var _ = require(&#39;lodash&#39;);
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Also, do note that since node already expects a JavaScript file you don’t have to put the &lt;code&gt;.js&lt;/code&gt; extension at th end.&lt;/p&gt;
+&lt;p&gt;When you do this, require will try to look for &lt;code&gt;node_modules&lt;/code&gt; directory in current directory. If it does find it and the required package is installed in this directory then it simply loads from there but if it doesn’t, then it goes to the parent directory and looks for &lt;code&gt;node_modules&lt;/code&gt; there and so on and so forth until it reaches the root of the path. This is why you have to be careful where you install your package. Sometimes it can get confusing if you simply require a package and even though it’s not in your current &lt;code&gt;node_modules&lt;/code&gt; it simply works and in future that gets deleted and you have no idea why your app suddenly stopped working.&lt;/p&gt;
 
-&lt;p&gt;So that was with the &lt;code&gt;./&lt;/code&gt; and ‘/’ at the prefix of your module but there’s another mechanism node follows to look for your modules. If you don’t supply the &lt;code&gt;./&lt;/code&gt; at the prefix then the following steps is followed by node to search for your module.&lt;/p&gt;
+&lt;h2 id=&quot;requiring-as-directory&quot;&gt;Requiring as directory&lt;/h2&gt;
+&lt;p&gt;As similar to requiring as file, you can also require as a directory by simply doing:-  &lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;Checks if it’s a core module.&lt;/li&gt;
-  &lt;li&gt;Checks the module in &lt;code&gt;node_modules&lt;/code&gt; directory in the current directory and moves up one directory until the root of your app.&lt;/li&gt;
-  &lt;li&gt;Lastly checks in the path of &lt;code&gt;NODE_MODULE&lt;/code&gt; that’s specified in your system’s &lt;code&gt;environment variable&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;At the end throws exception if nothing is found.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The core module that node checks in the beginning are the core modules that node provides like &lt;code&gt;http&lt;/code&gt;, &lt;code&gt;fs&lt;/code&gt; which will take precedence over any other steps.&lt;br /&gt;
-If it’s not a core module then it starts looking for &lt;code&gt;node_modules&lt;/code&gt; until it reaches the root of your application. Something like this:-&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;--myRootDirectory
---node_modules
-----myModule.js
---lib
-----myAnotherModule.js //you can require('myModule') here.
---index.js // and here require('myModule') will reside.
+&lt;pre&gt;&lt;code&gt;var _ = require(&#39;./&#39;);
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;See how &lt;code&gt;lib&lt;/code&gt; directory doesn’t have &lt;code&gt;node_modules&lt;/code&gt; and it goes up one level in &lt;code&gt;myRootDirectory&lt;/code&gt; where it does have &lt;code&gt;node_modules&lt;/code&gt; directory which indeed has &lt;code&gt;myModule&lt;/code&gt;.&lt;br /&gt;
-Also, in the index.js, which is inside &lt;code&gt;myRootDirectory&lt;/code&gt; has &lt;code&gt;node_modules&lt;/code&gt; directory so it just immediately knows where &lt;code&gt;myModule&lt;/code&gt; is.&lt;br /&gt;
-NOTE:- node doesn’t traverse down so if you had something like this:-&lt;/p&gt;
+&lt;p&gt;If you do so, then node will try to look for &lt;code&gt;package.json&lt;/code&gt; manifest file in the current directory and looks for &lt;code&gt;main&lt;/code&gt; property. &lt;code&gt;main&lt;/code&gt; property is the property in the &lt;code&gt;package.json&lt;/code&gt; file where we specify our entry file. So let’s say if you had an app then you could just do &lt;code&gt;npm start&lt;/code&gt; and then it reads the &lt;code&gt;package.json&lt;/code&gt;file for &lt;code&gt;main&lt;/code&gt; property and executes that script. But let’s move as this is a good topic for next post.&lt;br /&gt;
+If however you don’t have &lt;code&gt;package.json&lt;/code&gt; file in the directory that’s specified in the require then it just automatically assumes that you have &lt;code&gt;index.js&lt;/code&gt; on that directory. &lt;strong&gt;Again, same thing for npm start too&lt;/strong&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;--myRootDirectory
---node_modules
-----myModule.js
---lib
-----node_modules
-------myInsideModule.js
-----myAnotherModule.js //you can require('myInsideModule') here.
---index.js // but not here. THIS WILL NOT WORK require('myInsideModule')
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;However, if your module is inside your system path (&lt;code&gt;ENVIRONMENT VARIABLE&lt;/code&gt;) then your module should load just fine. For Windows users it’s usually in 
-&lt;code&gt;c:\Program Files\Node\lib&lt;/code&gt; and for Linux users just &lt;code&gt;echo PATH&lt;/code&gt; and google on how to add path in your &lt;code&gt;environment variable&lt;/code&gt;. &lt;/p&gt;
-
-&lt;p&gt;You can play with the &lt;a href=&quot;https://github.com/sinkingshriek/load_node_module&quot;&gt;sample node_modules&lt;/a&gt; that I’ve made ready for you play. Check out the commits too on what mistakes I made to learn from it.  &lt;/p&gt;
+&lt;p&gt;Also, do note that you don’t have to specify &lt;code&gt;.js&lt;/code&gt; or &lt;code&gt;.node&lt;/code&gt;. Node looks for &lt;code&gt;.js&lt;/code&gt; or &lt;code&gt;.node&lt;/code&gt; automatically.&lt;/p&gt;
 
 </description>
         <pubDate>Thu, 29 May 2014 21:34:19 -0500</pubDate>
