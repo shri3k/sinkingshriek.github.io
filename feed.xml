@@ -7,6 +7,17 @@
     <atom:link href="http://sinkingshriek.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>pro-tip while installing from npm</title>
+        <description>&lt;p&gt;Usually, I start off my project with &lt;code&gt;npm init&lt;/code&gt; to get the &lt;code&gt;package.json&lt;/code&gt; manifest file in the current working directory but recently for a quick prototype I skipped that process and tried installing some packages when I noticed something peculiar. All my packages was getting installed in the parent/parent directory. After much research, I finally figured out that I had &lt;code&gt;package.json&lt;/code&gt; on my parent/parent directory and that’s why it wasn’t installing in the current working directory. &lt;/p&gt;
+
+&lt;p&gt;So pro-tip, start with &lt;code&gt;npm init&lt;/code&gt; to not waste &lt;strong&gt;30 MINUTES OF YOUR LIFE&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 05 Dec 2014 19:34:19 -0600</pubDate>
+        <link>http://sinkingshriek.github.io/node/npm/pro-tip/2014/12/05/pro-tip-while-installing-from-npm/</link>
+        <guid isPermaLink="true">http://sinkingshriek.github.io/node/npm/pro-tip/2014/12/05/pro-tip-while-installing-from-npm/</guid>
+      </item>
+    
+      <item>
         <title>quick overview of partial application</title>
         <description>&lt;p&gt;One of the thing that I like most about JavaScript is that it can also be written in a functional way and partial application is one of them. &lt;/p&gt;
 
@@ -505,59 +516,6 @@ any version whatsoever (usually the recent one)  &lt;/p&gt;
         <pubDate>Fri, 06 Jun 2014 21:34:19 -0500</pubDate>
         <link>http://sinkingshriek.github.io/node/npm/2014/06/06/ranges-in-npm/</link>
         <guid isPermaLink="true">http://sinkingshriek.github.io/node/npm/2014/06/06/ranges-in-npm/</guid>
-      </item>
-    
-      <item>
-        <title>How node modules actually load.</title>
-        <description>&lt;p&gt;&lt;em&gt;Edit:- This post has been modified as of 2014-12-06 to correct and clarify few issues in this post&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;I’ll take a break from the devtools post and post a quick info that I’ve been reading up this week.&lt;br /&gt;
-Before jumping to the topic let’s first look at what module really is.&lt;/p&gt;
-
-&lt;p&gt;In general, a module is nothing but a separated functionality (piece) of a program that gives structure to your code while adhering to two key features, &lt;strong&gt;low&lt;/strong&gt; &lt;code&gt;coupling&lt;/code&gt; and &lt;strong&gt;high&lt;/strong&gt; &lt;code&gt;cohesion&lt;/code&gt;, meaning that the piece of code that you write has very less or no dependency (&lt;strong&gt;low coupling&lt;/strong&gt;) and can be pluggable to almost any part of your other program (&lt;strong&gt;high cohesion&lt;/strong&gt;). Basically, these two terms go hand in hand and are co-related.&lt;/p&gt;
-
-&lt;p&gt;So, think of node modules as just a JavaScript module and you plug these modules in your program like this:-  &lt;/p&gt;
-
-&lt;p&gt;`var myModule = require(‘./myModule’);’&lt;/p&gt;
-
-&lt;p&gt;This is what the meat of this post is going to be. What exactly is happening when you do &lt;code&gt;require&lt;/code&gt;? &lt;/p&gt;
-
-&lt;h2 id=&quot;requiring-as-file&quot;&gt;Requiring as file&lt;/h2&gt;
-&lt;p&gt;Before I go any further notice that &lt;code&gt;./&lt;/code&gt; before the module name in that require? Whenever you supply &lt;code&gt;./&lt;/code&gt; to &lt;code&gt;require&lt;/code&gt; then node will search for the module in the current working directory or also called &lt;code&gt;relative path&lt;/code&gt;. So if you had your file structure as follows:-&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;--myRootDirectory
-----index.js //let&#39;s say this is where your require(&#39;./myModule&#39;) is
-----myModule.js
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Then doing &lt;code&gt;./&lt;/code&gt; will immediately search inside the current directory. If you would feel like putting your modules in a directory then that’s perfectly fine too. Just add &lt;code&gt;./directory_name/myAnotherModule&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;requiring-core-modules&quot;&gt;Requiring core modules&lt;/h2&gt;
-&lt;p&gt;Node comes with some core modules. If you simply &lt;code&gt;require(&#39;fs&#39;)&lt;/code&gt; (fs is file system core module), then node knows that it’s a core module and simply requires that.&lt;/p&gt;
-
-&lt;h2 id=&quot;requiring-previously-installed-modules&quot;&gt;Requiring previously installed modules&lt;/h2&gt;
-&lt;p&gt;There are thousands of packages in &lt;code&gt;npm&lt;/code&gt; that you can require. If you install some package in your project then you’ll notice a directory show up called &lt;code&gt;node_modules&lt;/code&gt;. To require these modules you would simple require the module name like:-  &lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var _ = require(&#39;lodash&#39;);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;When you do this, require will try to look for &lt;code&gt;node_modules&lt;/code&gt; directory in current directory. If it does find it and the required package is installed in this directory then it simply loads from there but if it doesn’t, then it goes to the parent directory and looks for &lt;code&gt;node_modules&lt;/code&gt; there and so on and so forth until it reaches the root of the path. This is why you have to be careful where you install your package. Sometimes it can get confusing if you simply require a package and even though it’s not in your current &lt;code&gt;node_modules&lt;/code&gt; it simply works and in future that gets deleted and you have no idea why your app suddenly stopped working.&lt;/p&gt;
-
-&lt;h2 id=&quot;requiring-as-directory&quot;&gt;Requiring as directory&lt;/h2&gt;
-&lt;p&gt;As similar to requiring as file, you can also require as a directory by simply doing:-  &lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var _ = require(&#39;./&#39;);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;If you do so, then node will try to look for &lt;code&gt;package.json&lt;/code&gt; manifest file in the current directory and looks for &lt;code&gt;main&lt;/code&gt; property. &lt;code&gt;main&lt;/code&gt; property is the property in the &lt;code&gt;package.json&lt;/code&gt; file where we specify our entry file. So let’s say if you had an app then you could just do &lt;code&gt;npm start&lt;/code&gt; and then it reads the &lt;code&gt;package.json&lt;/code&gt;file for &lt;code&gt;main&lt;/code&gt; property and executes that script. But let’s move as this is a good topic for next post.&lt;br /&gt;
-If however you don’t have &lt;code&gt;package.json&lt;/code&gt; file in the directory that’s specified in the require then it just automatically assumes that you have &lt;code&gt;index.js&lt;/code&gt; on that directory. &lt;strong&gt;Again, same thing for npm start too&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Also, do note that you don’t have to specify &lt;code&gt;.js&lt;/code&gt; or &lt;code&gt;.node&lt;/code&gt;. Node looks for &lt;code&gt;.js&lt;/code&gt; or &lt;code&gt;.node&lt;/code&gt; automatically.&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 29 May 2014 21:34:19 -0500</pubDate>
-        <link>http://sinkingshriek.github.io/node/2014/05/29/how-node-modules-load/</link>
-        <guid isPermaLink="true">http://sinkingshriek.github.io/node/2014/05/29/how-node-modules-load/</guid>
       </item>
     
   </channel>
