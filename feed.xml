@@ -7,6 +7,23 @@
     <atom:link href="http://sinkingshriek.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>funxtion - a prototype util tool</title>
+        <description>&lt;p&gt;Funxtion is a utility tool that I created out of frustration to make any function in a file be able to execute from the cli without needing for the developer to create a seperate file just so s/he can test out his/her idea in node.
+Although there are number of prototyping tools like &lt;a href=&quot;http://requirebin.com&quot;&gt;requirebin.com&lt;/a&gt;, &lt;a href=&quot;http://c9.io&quot;&gt;c9.io&lt;/a&gt;, &lt;a href=&quot;http://runable.com&quot;&gt;runnable&lt;/a&gt; and more, none of them felt faster, flexible and more native than running it locally on my computer. However, there was one caveat to this. I had to create a seperate file everytime just to quickly prototype some idea. This is not a big deal at first but as time goes by these zombie prototype files just starts piling up and starts producing clutter in my computer. I wish there was something like &lt;code&gt;Ctrl+Shift+J&lt;/code&gt; in browser for client side JavaScript but for now I will settle with &lt;code&gt;funxtion&lt;/code&gt;.  &lt;/p&gt;
+
+&lt;p&gt;Again, I can’t emphasize this enough. This tool is highly for prototype only but if you do find some other usage of it then feel free to explore and experiment.  &lt;/p&gt;
+
+&lt;p&gt;You can find and read more about &lt;code&gt;funxtion&lt;/code&gt; on the following links.&lt;br /&gt;
+&lt;a href=&quot;https://www.npmjs.com/package/funxtion&quot;&gt;npm&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://github.com/sinkingshriek/funxtion&quot;&gt;github&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://github.com/sinkingshriek/funxtion/blob/master/readme.md&quot;&gt;readme&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 31 Dec 2014 19:34:19 -0600</pubDate>
+        <link>http://sinkingshriek.github.io/node/npm/utility/2014/12/31/funxtion/</link>
+        <guid isPermaLink="true">http://sinkingshriek.github.io/node/npm/utility/2014/12/31/funxtion/</guid>
+      </item>
+    
+      <item>
         <title>pro-tip while installing from npm</title>
         <description>&lt;p&gt;Usually, I start off my project with &lt;code&gt;npm init&lt;/code&gt; to get the &lt;code&gt;package.json&lt;/code&gt; manifest file in the current working directory but recently for a quick prototype I skipped that process and tried installing some packages when I noticed something peculiar. All my packages was getting installed in the parent/parent directory. After much research, I finally figured out that I had &lt;code&gt;package.json&lt;/code&gt; on my parent/parent directory and that’s why it wasn’t installing in the current working directory. &lt;/p&gt;
 
@@ -476,46 +493,6 @@ exports.Calculator = Calculator; //This will however work.
         <pubDate>Sat, 28 Jun 2014 20:34:19 -0500</pubDate>
         <link>http://sinkingshriek.github.io/casual/node/modules/2014/06/28/exports-vs-module-exports/</link>
         <guid isPermaLink="true">http://sinkingshriek.github.io/casual/node/modules/2014/06/28/exports-vs-module-exports/</guid>
-      </item>
-    
-      <item>
-        <title>Ranges in npm.</title>
-        <description>&lt;p&gt;I’ll keep this post really short as I have been quite busy and will still be for the next two weeks. &lt;/p&gt;
-
-&lt;p&gt;So, this week in one of the JS meetup &lt;a href=&quot;https://twitter.com/mrjedmao&quot;&gt;Jed Mao&lt;/a&gt; brought up a really good point on why he uses &lt;code&gt;npm&lt;/code&gt; from the &lt;code&gt;cli&lt;/code&gt; instead of writing the package name in &lt;code&gt;package.json&lt;/code&gt; and just doing &lt;code&gt;npm install&lt;/code&gt;. &lt;/p&gt;
-
-&lt;p&gt;If you want to make any sense of the paragraph below then make sure that you know what &lt;a href=&quot;http://semver.org/&quot;&gt;&lt;code&gt;semver&lt;/code&gt;&lt;/a&gt; is. &lt;/p&gt;
-
-&lt;p&gt;Before I put forth his reasoning, I was all up for just writing our &lt;code&gt;deps&lt;/code&gt; in &lt;code&gt;package.json&lt;/code&gt; and just doing &lt;code&gt;npm install&lt;/code&gt; from the cli. But there are something called &lt;code&gt;ranges&lt;/code&gt; that you can specify in the version number for your dependencies so that only those dependencies that are in the range gets downloaded. The comprehensive list of ranges is posted at the link below but in summary here are the ranges that you can specify :-&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;&amp;gt;1.0.0&lt;/code&gt; :-&lt;br /&gt;
-greater than a specific version number. You can also use &lt;code&gt;&amp;lt;&lt;/code&gt;, &lt;code&gt;&amp;gt;=&lt;/code&gt;, &lt;code&gt;&amp;lt;=&lt;/code&gt;&lt;br /&gt;
-&lt;code&gt;&amp;gt;1.0.0  &amp;lt;2.0.0&lt;/code&gt; || &lt;code&gt;1.0.0 - 2.0.0&lt;/code&gt; :-&lt;br /&gt;
-whatever the version between v1 and v2. You can use the first or the second one. Again, you can use &lt;code&gt;&amp;lt;=&lt;/code&gt;, &lt;code&gt;&amp;gt;=&lt;/code&gt; likewise.&lt;br /&gt;
-&lt;code&gt;~1.0.0&lt;/code&gt; :-&lt;br /&gt;
-accepts all patches, meaning &lt;code&gt;&amp;gt;=1.0.1 - &amp;lt;1.1.0&lt;/code&gt;&lt;br /&gt;
-&lt;code&gt;^1.0.0&lt;/code&gt; :-&lt;br /&gt;
-accepts all pre-releases (minor release), meaning &lt;code&gt;&amp;gt;=1.0.0 - &amp;lt;2.0.0&lt;/code&gt;&lt;br /&gt;
-&lt;code&gt;1.0.x&lt;/code&gt; || &lt;code&gt;1.0.*&lt;/code&gt; || &lt;code&gt;1.0&lt;/code&gt; :-&lt;br /&gt;
-accepts all the version that matches &lt;code&gt;1.0&lt;/code&gt; versions&lt;br /&gt;
-&lt;code&gt;*&lt;/code&gt; || &lt;code&gt;x&lt;/code&gt; || &lt;code&gt;&quot;&quot;&lt;/code&gt; :-&lt;br /&gt;
-any version whatsoever (usually the recent one)  &lt;/p&gt;
-
-&lt;p&gt;The last one on the list was my proposal to include in the &lt;code&gt;package.json&lt;/code&gt; file so that one doesn’t have to go lookup the version number for each &lt;code&gt;dep&lt;/code&gt;. But like Jed pointed out it can have bad consequences and I was naive to even think &lt;code&gt;*&lt;/code&gt; was an option. &lt;code&gt;*&lt;/code&gt; means all the major, minor and patches. Major changes could mean that it will break your application if you rely on version specific features. &lt;/p&gt;
-
-&lt;p&gt;So, Jed’s advice made perfect sense to me. His advice was to just use &lt;code&gt;cli&lt;/code&gt; like so :-&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;npm install express mongodb mocha sinon grunt&lt;/code&gt; &lt;/p&gt;
-
-&lt;p&gt;Doing the above will install the latest stable build and npm will also put the actual version name with &lt;code&gt;^&lt;/code&gt; at the prefix. Again, &lt;code&gt;^&lt;/code&gt; will install all the pre-releases and should not break your application.&lt;/p&gt;
-
-&lt;p&gt;To keep track of your versions you can also use &lt;a href=&quot;https://gemnasium.com/&quot;&gt;Gemnasium&lt;/a&gt; as mentioned by Jed in the meetup. &lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/isaacs/node-semver#ranges&quot;&gt;More about ranges from Issac.&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Fri, 06 Jun 2014 21:34:19 -0500</pubDate>
-        <link>http://sinkingshriek.github.io/node/npm/2014/06/06/ranges-in-npm/</link>
-        <guid isPermaLink="true">http://sinkingshriek.github.io/node/npm/2014/06/06/ranges-in-npm/</guid>
       </item>
     
   </channel>
