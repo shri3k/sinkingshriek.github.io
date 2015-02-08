@@ -65,7 +65,7 @@
 It is also very much used to decouple the code and avoid the callback hell. If you’re still not convinced enough then feel free to google. It’s also inherited by the <code>stream</code> module which merits a seperate post in itself.  </p>
 
 <h2 id="what-is-eventemitter">What is EventEmitter?</h2>
-<p>I’ve already hinted what EventEmitter is above, but let’s go a little deeper. As you know already that the <code>WebAPI</code> gives you few predefined events (click, load, keydown, etc) by default. With EventEmitter, you can make your own events. The events can have any names as you please (but make it meaningful). If I wanted to have an event called ‘callMeOnlyWhenNeededPlease’, you absolutely can. The syntax is the same as you’re used to from the client-side JavaScript. So what’s the difference between the browser <code>attachEventListener</code> and this one? Apart from being able to create your own <code>events'</code> not much. Browser level JavaScript just hides the implementation but EventEmitter exposes that for you. That’s the main difference. However, you can absolutely simulate the EventEmitter module in browser by either using jQuery’s <code>trigger</code> method or DOM API which is <a href="http://www.2ality.com/2013/06/triggering-events.html">explained here</a>. Or if you want to do it in plain JavaScript then goto the <a href="##Deep_Dive">Deep Dive</a> section.
+<p>I’ve already hinted what EventEmitter is above, but let’s go a little deeper. As you know already that the <code>WebAPI</code> gives you few predefined events (click, load, keydown, etc) by default. With EventEmitter, you can make your own events. The events can have any names as you please (but make it meaningful). If I wanted to have an event called ‘callMeOnlyWhenNeededPlease’, you absolutely can. The syntax is the same as you’re used to from the client-side JavaScript. So what’s the difference between the browser <code>attachEventListener</code> and this one? Apart from being able to create your own <code>events'</code> not much. Browser level JavaScript just hides the implementation but EventEmitter exposes that for you. That’s the main difference. However, you can absolutely simulate the EventEmitter module in browser by either using jQuery’s <code>trigger</code> method or DOM API which is <a href="http://www.2ality.com/2013/06/triggering-events.html">explained here</a>. Or if you want to do it in plain JavaScript then goto the <a href="#deep-dive">Deep Dive</a> section.
 Okay, let’s look at an example on how it exactly works to get the feel of syntax.</p>
 
 <p>Here are all the <a href="http://nodejs.org/api/events.html">methods and properties</a> that EventEmitter exposes.</p>
@@ -127,7 +127,7 @@ dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     <div class="footer-col-2 column">
       <ul>
         <li>
-          <a href="https://github.com/sinkingshriek/jekyll-content">
+          <a href="http://github.com/sinkingshriek/jekyll-content">
             <span class="icon github">
               <svg version="1.1" class="github-icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                  viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
@@ -145,7 +145,7 @@ dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
           </a>
         </li>
         <li>
-          <a href="https://twitter.com/shri3k">
+          <a href="http://twitter.com/shri3k">
             <span class="icon twitter">
               <svg version="1.1" class="twitter-icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                  viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
