@@ -7,6 +7,31 @@
     <atom:link href="http://sinkingshriek.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>where am i</title>
+        <description>&lt;p&gt;It’s been quite a while that I had anything up here. I’m still very much interested in &lt;code&gt;node/io.js&lt;/code&gt; but lately I’ve been playing with other stuffs too. Most particularly with docker and some other text editors. In short, I’ve been looking for a perfect dev workflow.  &lt;/p&gt;
+
+&lt;p&gt;After using &lt;code&gt;vim&lt;/code&gt; for good 6 months it has become apparent that it wasn’t for me. Two of the pain points of &lt;code&gt;vim&lt;/code&gt; was &lt;code&gt;search&lt;/code&gt; in a project and searching &lt;code&gt;symbols/functions&lt;/code&gt; and files. And it is because of this that has led me to sought out a different text editor.&lt;/p&gt;
+
+&lt;p&gt;After using &lt;a href=&quot;http://www.sublimetext.com&quot;&gt;&lt;code&gt;Sublime Text&lt;/code&gt;&lt;/a&gt; for so long jumping over files had become as easy as typing few words but not so much with &lt;code&gt;vim&lt;/code&gt;. Although &lt;code&gt;CtrlP&lt;/code&gt; tries to mitigate that problem, it definitely is extremely slow and inaccurate for almost 60% of the time so I don’t even bother to use it if I can.&lt;br /&gt;
+First of all the fuzzy search of &lt;code&gt;CtrlP&lt;/code&gt; uses just plain old regex and if the directories somehow has the same match as with your file then it lists out all the directories with that match instead of focusing only on the file which is primarily my objective.&lt;br /&gt;
+Secondly, if you don’t have &lt;code&gt;git&lt;/code&gt; or &lt;code&gt;svn&lt;/code&gt; repository on your project then it immediately jumps to the root or your home directory and starts searching for everything instead of just the path you’re on. This would have been okay had it not taken 2 or 3 seconds to complete that task and was accurate.&lt;br /&gt;
+Another gripe is that it doesn’t detect new files automatically. If you have a project open and if you create a new file or directory then you constantly have to refresh the buffer(?). Incredibly frustrating if you’re trying to get something done fast.&lt;br /&gt;
+It does give you the capability to extend this plugin, &lt;code&gt;CtrlPFunky&lt;/code&gt; is one of them. This plugin lets you jump to &lt;code&gt;symbols/function&lt;/code&gt; (another critical part of my workflow) but this too does not show much promise. I’ve had numerous issues where it failed just because I’m using function expression. I haven’t tried it on other language except &lt;code&gt;javascript&lt;/code&gt; but this too was an utter disappointment.  &lt;/p&gt;
+
+&lt;p&gt;Searching also, is another huge pain in &lt;code&gt;vim&lt;/code&gt;. If you’re on a single file then searching isn’t a big deal but if you start searching your entire project then it feels like an eternity when &lt;code&gt;vim&lt;/code&gt; finally gets done with it’s search. Don’t even get me started on replace.&lt;/p&gt;
+
+&lt;p&gt;Don’t get me wrong I really like &lt;code&gt;vim&lt;/code&gt; and I can see myself using it in the future but I’m going to hold it off until &lt;a href=&quot;http://neovim.org&quot;&gt;&lt;code&gt;neovim&lt;/code&gt;&lt;/a&gt; gets stable. I however, like all the modal mapping that gives you. Love the &lt;code&gt;hjkl&lt;/code&gt; movement and lots of other things that I continue learning and I would be lying if I say I hadn’t been productive when &lt;code&gt;vim&lt;/code&gt; doesn’t get in my way but there are few things that absolutely infuriates me. However, it doesn’t mean that I switching back to &lt;code&gt;Sublime Text&lt;/code&gt; either. I absolutely love &lt;code&gt;Sublime Text&lt;/code&gt; but again there are couple of things I wish it could do better. &lt;code&gt;Vintage&lt;/code&gt; mode doesn’t give me as much vim-ish feeling than I would like it to. The package management is almost non existent, meaning that I’d have to install all the package over and over again if I am on a new machine (there are ways to sync this with dropbox and the likes but the way I see it, it’s just another overhead in my dev time). So, now I’m using &lt;a href=&quot;http://atom.io&quot;&gt;Atom.io&lt;/a&gt; which is quite slower than &lt;code&gt;Sublime Text&lt;/code&gt; but because of the functionalities that it offers makes it a really compelling editor. I’ll probably talk about it in future if need be.&lt;/p&gt;
+
+&lt;p&gt;I’ll talk more about &lt;a href=&quot;http://docker.io&quot;&gt;&lt;code&gt;docker&lt;/code&gt;&lt;/a&gt; in the future too but in brief, I’m using it as a testing ground to test out any new applications. Loving it so far. More about this on later posts.&lt;/p&gt;
+
+&lt;p&gt;But for now, you should start using &lt;code&gt;nightmare.js&lt;/code&gt; that I’ve been playing with lately. It’s a really good wrapper for &lt;code&gt;phantomjs&lt;/code&gt; and makes automating browser much easier than &lt;code&gt;phantomjs&lt;/code&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 14 Mar 2015 20:34:19 -0500</pubDate>
+        <link>http://sinkingshriek.github.io/2015/03/14/where-am-i/</link>
+        <guid isPermaLink="true">http://sinkingshriek.github.io/2015/03/14/where-am-i/</guid>
+      </item>
+    
+      <item>
         <title>EventEmitter</title>
         <description>&lt;p&gt;Before even describing what Event Emitter is, I think it’s important to note that Event Emitter is one of the fundamental concept in, not only node, but in JavaScript in general. In layman terms, Event Emitter is pretty much(well, partly) &lt;code&gt;addEventListener&lt;/code&gt; in client-side JavaScript where we attach events like &lt;code&gt;click&lt;/code&gt;, &lt;code&gt;keydown&lt;/code&gt;, &lt;code&gt;load&lt;/code&gt;, etc but with higher abstraction.&lt;br /&gt;
 It is also very much used to decouple the code and avoid the callback hell. If you’re still not convinced enough then feel free to google. It’s also inherited by the &lt;code&gt;stream&lt;/code&gt; module which merits a seperate post in itself.  &lt;/p&gt;
@@ -449,19 +474,6 @@ There are times when you just can’t avoid using &lt;code&gt;global&lt;/code&gt
         <pubDate>Sun, 13 Jul 2014 20:34:19 -0500</pubDate>
         <link>http://sinkingshriek.github.io/node/chaijs/mocha/2014/07/13/apt-use-of-global/</link>
         <guid isPermaLink="true">http://sinkingshriek.github.io/node/chaijs/mocha/2014/07/13/apt-use-of-global/</guid>
-      </item>
-    
-      <item>
-        <title>Creating chains </title>
-        <description>&lt;p&gt;Just a quick tip this week. Although, most of you know about &lt;code&gt;this&lt;/code&gt; already, you can return your prototype function with &lt;code&gt;this&lt;/code&gt; to make them chainable.
-Below is the snippet that will enable that:-
-&lt;script src=&quot;https://gist.github.com/sinkingshriek/f12bb33a19e383c3ec53.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;This is technically what jQuery uses for their functions to be chainable and I just recently found out about. Makes your code lot more dynamic this way.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 09 Jul 2014 20:34:19 -0500</pubDate>
-        <link>http://sinkingshriek.github.io/javascript/protip/2014/07/09/creating-chains/</link>
-        <guid isPermaLink="true">http://sinkingshriek.github.io/javascript/protip/2014/07/09/creating-chains/</guid>
       </item>
     
   </channel>
