@@ -7,6 +7,62 @@
     <atom:link href="http://sinkingshriek.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>buffer</title>
+        <description>&lt;p&gt;Before I write about &lt;code&gt;streams&lt;/code&gt; I think it’s important that I write about &lt;code&gt;buffers&lt;/code&gt; first just to give some context. &lt;code&gt;Buffers&lt;/code&gt; can be a new thing to those JavaScripters that are coming from client side because it’s not available there. So what are &lt;code&gt;buffers&lt;/code&gt; in the first place?&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Buffer&lt;/code&gt;, a term in itself is very over loaded. There can be a buffer between two strangers, buffer in a chemical solution, buffer in a railway track. But the buffer that we’re interested in computer science is a physical memory where we temporarily hold the data so that it can be moved from one place to another, usually in a smooth manner.&lt;br /&gt;
+Let’s take a really common example of &lt;code&gt;buffer&lt;/code&gt;. Back when broadband wasn’t common we’d usually see videos being “buffered” on the Internet. What it’s trying to say when the video is being buffered is that the input/download is lot slower than that’s being outputted/playbacked and that is why that video is being stored in the memory first before it starts playing back for a smoother playback.&lt;/p&gt;
+
+&lt;p&gt;So what does all this mean to us, node developers? In a really simple terms, it’s a way to hold binary data. Often times when dealing with network we’re not blessed with input being on the equal speed with the output and we need to hold some raw data to make it as smooth as possible. Here, raw or binary data can be anything from network streams to file systems. Core(client) JavaScript only was unicode friendly and even though earlier versions of &lt;code&gt;node&lt;/code&gt; used unicode to handle data it was soon realized that it didn’t play nice with binary data and hence &lt;code&gt;buffer&lt;/code&gt; was created.&lt;/p&gt;
+
+&lt;p&gt;Since &lt;code&gt;buffer&lt;/code&gt; is a core component in &lt;code&gt;node&lt;/code&gt; you don’t really have to do &lt;code&gt;require(&#39;buffer&#39;)&lt;/code&gt;. You can just start playing with buffer by doing &lt;code&gt;new Buffer(2)&lt;/code&gt;. And as you can see that &lt;code&gt;buffer&lt;/code&gt; in &lt;code&gt;node&lt;/code&gt; is a class and holds 2 bytes of data because we passed an argument of 2. &lt;code&gt;Buffer&lt;/code&gt; behaves like an array however once you specify the size it cannot be resized. No matter how much you try it’ll only hold 2 bytes of information. Speaking of which, you write to a buffer by doing:-&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var k = new Buffer(2);  
+k.write(&#39;blah&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you execute the above code in the &lt;code&gt;node repl&lt;/code&gt; then you’ll see some funny looking characters. Those funny looking characters are binary data that we talked about earlier. &lt;code&gt;Buffer&lt;/code&gt; saves everything in raw data and you’d have to specify encoding. You can usually do &lt;code&gt;toString()&lt;/code&gt; to get the actual data but if your encoding type is something other than &lt;code&gt;utf8&lt;/code&gt; then you’d have to specify it as &lt;code&gt;toString(&#39;ascii&#39;)&lt;/code&gt; or other encoding type based on your need. By default, &lt;code&gt;node&lt;/code&gt; uses &lt;code&gt;utf8&lt;/code&gt; as an encoding type, for others, you specify.&lt;br /&gt;
+The above code can also be written as:-  &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var k = new Buffer(&#39;blah&#39;, &#39;utf-8&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above code is a little different from the previous one in a sense that you’re sending a string instead of an integer as a constructor parameter and setting the encoding to ‘utf-8’ on instantiation.&lt;/p&gt;
+
+&lt;p&gt;Here’s something else that you can try:-&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var k = new Buffer(11);  
+k.write(&#39;i ♥ u&#39;);  
+k.toString();  
+k.write(&#39; man&#39;, 7, &#39;utf-8&#39;);  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here, you’re setting a buffer of 11 bytes. Notice that ♥ takes 3 bytes instead of just 1 like other letters. Other encoding types also may vary on the bytes. On the third line you’ll again see &lt;code&gt;i ♥ u&lt;/code&gt; followed by weird characters and symbols. Those are again, binary data and buffer sticks with that 11 bytes and displays everything.&lt;br /&gt;
+In the fourth line there I’m setting an offset of 7, meaning that it will start writing after 7 bytes of data and will write &lt;code&gt;i ♥ u man&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;You can play with &lt;code&gt;buffer&lt;/code&gt; more and the &lt;a href=&quot;https://nodejs.org/api/buffer.html#buffer_buffer&quot;&gt;node docs&lt;/a&gt; are pretty straight forward to follow.&lt;/p&gt;
+
+&lt;p&gt;So here is the TL;DR of this whole post:-&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Buffer holds binary data&lt;/li&gt;
+  &lt;li&gt;Is only available in &lt;code&gt;node&lt;/code&gt; and not in core js.&lt;/li&gt;
+  &lt;li&gt;No need to &lt;code&gt;require(&#39;buffer&#39;)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Buffers are fixed but acts like an array&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;new Buffer&lt;/code&gt; to make an instance&lt;/li&gt;
+  &lt;li&gt;Can be converted to different encodings&lt;/li&gt;
+  &lt;li&gt;Default is &lt;code&gt;utf-8&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;usually, &lt;code&gt;toString&lt;/code&gt; to read &lt;code&gt;buffers&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Also, if you really want to get into details of &lt;code&gt;buffer&lt;/code&gt; here’s a really good talk by &lt;a href=&quot;https://www.youtube.com/watch?v=aJrM46yzg0Q&quot;&gt;Trevor Norris &lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 08 May 2015 20:34:19 -0500</pubDate>
+        <link>http://sinkingshriek.github.io/buffer/node/2015/05/08/buffer/</link>
+        <guid isPermaLink="true">http://sinkingshriek.github.io/buffer/node/2015/05/08/buffer/</guid>
+      </item>
+    
+      <item>
         <title>cors</title>
         <description>&lt;p&gt;This post is going to be a little different. The core topic won’t be on JavaScript or node however, it will touch on them a little later. The primary reason for me to write this post was because we make and consume lots of APIs today and it can be frustrating at times if we don’t know some rules that apply on using them. This post will try to give you that 20,000 feet view at what &lt;em&gt;CORS&lt;/em&gt; is and how you can use it.&lt;/p&gt;
 
@@ -16,11 +72,14 @@ The overall idea of &lt;em&gt;CORS&lt;/em&gt; is for the client (browser) to sen
 The main players in this process are browsers and servers. When I say browsers, I mean that browser implementators have to follow certain rules to make this happen as well. There are still other headers that users (person who’s making ajax request) can add to their requests as well like &lt;code&gt;withCredentials&lt;/code&gt; and other custom headers. But I won’t be covering about that here. You can read more about them on the links below.&lt;/p&gt;
 
 &lt;h2 id=&quot;flow&quot;&gt;Flow&lt;/h2&gt;
-&lt;p&gt;The flow is pretty straight forward once we learn what’s happening. In order, following are the things that happen:-
-- You make a &lt;code&gt;XMLHttpRequest()&lt;/code&gt; to domain other than the one you’re on, aka, &lt;code&gt;Origin&lt;/code&gt;. &lt;code&gt;Origin&lt;/code&gt; constitutes of &lt;scheme&gt;://&lt;host&gt;:&lt;port&gt; e.g. http://spotify.com is different than https://spotify.com (different scheme) or http://store.spotify.com (different host) or http://spotify.com:81 (different port)
-- The browser sees that you&#39;re trying to make a request other than the same origin and adds `Origin` header on your request.
-- It reaches the server. The server if it wants to allow other domain to access it&#39;s service then it adds `Access-Control-Allow-Origin` with either the `origin` from the request or simply `*` which represents that it allows everyone to access it&#39;s service. e.g. `Access-Control-Allow-Origin: http://spotify.com` or `Access-Control-Allow-Origin: *`. By default this is not set. You as an API developer have to set it yourself. The response is sent to the browser with or without `Access-Control-Allow-Origin`
-- The browser checks if it has `Access-Control-Allow-Origin` header and checks the permission. If either the request origin or * is present on that header then it lets the response to go through and everything works normal. If not then you&#39;ll see an error displayed on your browser console mentioning something about not being able to process the response.&lt;/port&gt;&lt;/host&gt;&lt;/scheme&gt;&lt;/p&gt;
+&lt;p&gt;The flow is pretty straight forward once we learn what’s happening. In order, following are the things that happen:-&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You make a &lt;code&gt;XMLHttpRequest()&lt;/code&gt; to domain other than the one you’re on, aka, &lt;code&gt;Origin&lt;/code&gt;. &lt;code&gt;Origin&lt;/code&gt; constitutes of &lt;scheme&gt;://&lt;host&gt;:&lt;port&gt; e.g. http://spotify.com is different than https://spotify.com (different scheme) or http://store.spotify.com (different host) or http://spotify.com:81 (different port)  &lt;/port&gt;&lt;/host&gt;&lt;/scheme&gt;&lt;/li&gt;
+  &lt;li&gt;The browser sees that you’re trying to make a request other than the same origin and adds &lt;code&gt;Origin&lt;/code&gt; header on your request.&lt;/li&gt;
+  &lt;li&gt;It reaches the server. The server if it wants to allow other domain to access it’s service then it adds &lt;code&gt;Access-Control-Allow-Origin&lt;/code&gt; with either the &lt;code&gt;origin&lt;/code&gt; from the request or simply &lt;code&gt;*&lt;/code&gt; which represents that it allows everyone to access it’s service. e.g. &lt;code&gt;Access-Control-Allow-Origin: http://spotify.com&lt;/code&gt; or &lt;code&gt;Access-Control-Allow-Origin: *&lt;/code&gt;. By default this is not set. You as an API developer have to set it yourself. The response is sent to the browser with or without &lt;code&gt;Access-Control-Allow-Origin&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;The browser checks if it has &lt;code&gt;Access-Control-Allow-Origin&lt;/code&gt; header and checks the permission. If either the request origin or * is present on that header then it lets the response to go through and everything works normal. If not then you’ll see an error displayed on your browser console mentioning something about not being able to process the response.&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&quot;code&quot;&gt;Code&lt;/h2&gt;
 &lt;p&gt;Okay, now that we got the theoretical portion covered. Let’s see it in code.&lt;/p&gt;
@@ -478,56 +537,6 @@ I’ve been trying to get my hands dirty on angular and while the tutorial in th
         <pubDate>Sun, 27 Jul 2014 20:34:19 -0500</pubDate>
         <link>http://sinkingshriek.github.io/node/angular/chaijs/mocha/2014/07/27/barebones-unit-testing-in-angular-with-mocha/</link>
         <guid isPermaLink="true">http://sinkingshriek.github.io/node/angular/chaijs/mocha/2014/07/27/barebones-unit-testing-in-angular-with-mocha/</guid>
-      </item>
-    
-      <item>
-        <title>when it&#39;s apt to use global</title>
-        <description>&lt;p&gt;Pretty much almost any programmer that you meet would say that sticking variables to &lt;code&gt;global&lt;/code&gt; object is a bad idea. JavaScript was pretty notorious for this one. Forget to put &lt;code&gt;var&lt;/code&gt; in your variable inside the &lt;code&gt;function&lt;/code&gt; and it goes straight to the &lt;code&gt;window&lt;/code&gt;(global) object if you forgot &lt;code&gt;&#39;use strict&#39;;&lt;/code&gt; in your function or in global context. It’s still true for node but instead of &lt;code&gt;window&lt;/code&gt; object it gets added to &lt;code&gt;global&lt;/code&gt; object.&lt;br /&gt;
-&lt;code&gt;Global&lt;/code&gt; is well, global object in node, just like &lt;code&gt;window&lt;/code&gt; in browsers. You can put your variables in global object by either not declaring it with &lt;code&gt;var&lt;/code&gt; or using &lt;code&gt;global&lt;/code&gt; or &lt;code&gt;GLOBAL&lt;/code&gt;. &lt;em&gt;&lt;code&gt;GLOBAL&lt;/code&gt; is just an alias for global.&lt;/em&gt; &lt;/p&gt;
-
-&lt;p&gt;So, let’s just demonstrate the above with some code. Create two files with the following content and then run &lt;code&gt;node index&lt;/code&gt;;&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/sinkingshriek/7ac40170e5d2606b4180.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;As you can see from the above code that we didn’t really export &lt;code&gt;someVal&lt;/code&gt; from globalMe and yet the &lt;code&gt;index.js&lt;/code&gt; was still able to find it. And as you may have already guessed it, it’s because that we’re sticking this into &lt;code&gt;global&lt;/code&gt; object.&lt;/p&gt;
-
-&lt;p&gt;Okay, so enough of the demonstration and to get to the point on the real topic at hand. Why would we ever want to use it if it’s a bad practice?&lt;br /&gt;
-There are times when you just can’t avoid using &lt;code&gt;global&lt;/code&gt; object. Just recently I &lt;em&gt;had&lt;/em&gt; to use &lt;code&gt;global&lt;/code&gt; object to get my code running which brings me to another topic.  &lt;/p&gt;
-
-&lt;h2 id=&quot;how-to-use-chaijs-in-your-mochaopts-&quot;&gt;How to use chaijs in your mocha.opts ?&lt;/h2&gt;
-
-&lt;p&gt;I won’t go into details on what &lt;code&gt;chai&lt;/code&gt; or &lt;code&gt;mocha&lt;/code&gt; is in this post. And if you’ve been playing around with mocha then you know you can have &lt;code&gt;mocha.opts&lt;/code&gt; file in your &lt;code&gt;test&lt;/code&gt; folder which is basically options for your &lt;code&gt;mocha&lt;/code&gt; command. So instead of doing:-&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;mocha --required should --reporter nyan
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;You can do :-&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;//mocha.opts
---required should
---reporter nyan
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;But since &lt;code&gt;chaijs&lt;/code&gt; is a bundle of three different assertion libraries you can’t do &lt;code&gt;mocha --required chai().should&lt;/code&gt;. That’s just absurd. Your command line doesn’t invoke functions. So how do you go about achieving &lt;code&gt;chai&lt;/code&gt; with &lt;code&gt;mocha&lt;/code&gt;? Globals!!&lt;/p&gt;
-
-&lt;p&gt;So if you create a &lt;code&gt;node_module&lt;/code&gt; with some file called..let’s say &lt;code&gt;chai-mocha-wrap.js&lt;/code&gt; with the following globals :-&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/sinkingshriek/40e6cd6728e0c39e883d.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;Then you should be able to do :-&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;//mocha.opts
---required chai-mocha
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;And have chai assertion on all your mocha tests. You also have the option to use &lt;code&gt;should&lt;/code&gt;, &lt;code&gt;expect&lt;/code&gt; or &lt;code&gt;assert&lt;/code&gt; (yay freedom!!).&lt;/p&gt;
-
-&lt;p&gt;Although, this is an ideal case for the usage of &lt;code&gt;global&lt;/code&gt; you should always, &lt;strong&gt;always&lt;/strong&gt; document why you’re using &lt;code&gt;global&lt;/code&gt;.&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 13 Jul 2014 20:34:19 -0500</pubDate>
-        <link>http://sinkingshriek.github.io/node/chaijs/mocha/2014/07/13/apt-use-of-global/</link>
-        <guid isPermaLink="true">http://sinkingshriek.github.io/node/chaijs/mocha/2014/07/13/apt-use-of-global/</guid>
       </item>
     
   </channel>
